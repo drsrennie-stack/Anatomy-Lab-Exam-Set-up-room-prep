@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 004 Practical: Room Map &amp; Rotation Timer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3D4C; --navy-deep:#142a36; --navy-tint:#EDF1F3;
+    --gold:#B8924A; --terra:#C2734D; --terra-dark:#A0522D;
+    --white:#FFFFFF; --offwhite:#FAFAF9;
+    --rest-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--navy); background:var(--offwhite); -webkit-font-smoothing:antialiased;}
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--navy); color:#fff; padding:10px 16px; z-index:100;}
+  .skip-link:focus{left:0;}
+  .wrap{max-width:1280px; margin:0 auto; padding:22px 22px 60px;}
+
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--terra-dark); margin:0 0 6px;}
+  h1{font-weight:800; font-size:27px; margin:0 0 4px; line-height:1.1;}
+  .subhead{font-weight:600; color:var(--terra-dark); font-size:17px; margin:0 0 14px;}
+
+  .btn{font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; border-radius:6px; padding:9px 16px; border:1px solid var(--navy); background:var(--navy); color:#fff; transition:background 160ms ease, transform 160ms ease;}
+  .btn:hover{background:var(--navy-deep); transform:translateY(-1px);}
+  .btn.secondary{background:var(--white); color:var(--navy);}
+  .btn.secondary:hover{background:var(--navy-tint);}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:2px; box-shadow:0 0 0 6px var(--navy-deep);}
+
+  .card{background:var(--white); border:1px solid var(--navy-tint); border-radius:12px; padding:16px; box-shadow:var(--rest-shadow); margin-bottom:18px;}
+  .card h2{font-weight:600; color:var(--terra-dark); font-size:15px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.04em;}
+  .map-card svg{width:100%; height:auto; display:block;}
+  .map-card img{width:100%; height:auto; display:block; border-radius:8px;}
+  .map-controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px;}
+  .map-controls .rlabel{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--navy);}
+  .map-controls .btn{font-size:13px; padding:7px 13px;}
+  .room-note{font-size:13px; color:var(--terra-dark); font-weight:500;}
+
+  .timer-card{display:flex; flex-direction:column; align-items:center; text-align:center;}
+  .clock{font-weight:800; color:var(--navy); font-size:clamp(64px,11vw,128px); line-height:1; font-variant-numeric:tabular-nums; margin:4px 0;}
+  .clock.warn{color:var(--terra-dark);}
+  .cycle{font-weight:500; font-size:15px; color:var(--terra-dark); margin:0 0 12px;}
+  .progress{width:100%; max-width:680px; height:12px; background:var(--navy-tint); border-radius:6px; overflow:hidden; margin-bottom:16px;}
+  .progress-bar{height:100%; background:var(--terra-dark); width:100%;}
+  .settings-row{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; justify-content:center; font-size:13px; margin-bottom:14px;}
+  .settings-row label{font-weight:700; color:var(--navy);}
+  .settings-row input{font-family:inherit; font-size:14px; width:64px; color:var(--navy); border:1px solid var(--navy); border-radius:6px; padding:6px 8px; background:var(--white);}
+  .settings-row .sep{font-weight:800; color:var(--navy);}
+  .timer-btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:14px;}
+  .timer-btns .btn{font-size:16px; padding:11px 24px;}
+  .sound-row{display:flex; flex-wrap:wrap; gap:12px 16px; align-items:center; justify-content:center; font-size:13px;}
+  .sound-row label{font-weight:700; color:var(--navy);}
+  .sound-row select{font-family:inherit; font-size:14px; color:var(--navy); border:1px solid var(--navy); border-radius:6px; padding:7px 9px; background:var(--white);}
+  .sound-row input[type=range]{accent-color:var(--gold);}
+  .toggle{display:inline-flex; border:1px solid var(--navy); border-radius:8px; overflow:hidden;}
+  .toggle button{font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; border:none; background:var(--white); color:var(--navy); padding:8px 14px;}
+  .toggle button[aria-pressed="true"]{background:var(--navy); color:#fff;}
+  .hint{font-weight:500; color:var(--navy); font-size:13px; margin:14px 0 0; max-width:620px;}
+  .topbar{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;}
+
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#timer">Skip to timer</a>
+<div class="wrap">
+  <div class="topbar">
+    <header>
+      <p class="eyebrow">BIO 004 &middot; Human Anatomy</p>
+      <h1>Lab Practical: Room Map &amp; Rotation Timer</h1>
+      <p class="subhead">26 stations &middot; follow the arrows, rotate on the chime</p>
+    </header>
+    <button type="button" class="btn secondary" id="fsBtn">Full screen</button>
+  </div>
+
+  <section class="card map-card" aria-label="Room map">
+    <h2>Room map &middot; rotation order</h2>
+    <div class="map-controls">
+      <span class="rlabel">Room</span>
+      <select id="roomSel" aria-label="Choose room">
+        <option value="builtin">Built-in Anatomy Room</option>
+        <option value="dry">Dry Lab</option>
+        <option value="wet">Wet Lab</option>
+      </select>
+      <button type="button" class="btn secondary" id="uploadBtn">Upload image for this room</button>
+      <input type="file" id="roomFile" accept="image/png,image/jpeg,image/webp" hidden>
+      <button type="button" class="btn secondary" id="removeBtn">Remove image</button>
+      <span class="room-note" id="roomNote" aria-live="polite"></span>
+    </div>
+    <div id="mapHost"></div>
+  </section>
+
+  <section class="card timer-card" id="timer" aria-label="Rotation timer">
+    <h2>Station timer</h2>
+    <div class="settings-row">
+      <label for="mm">Interval</label>
+      <input id="mm" type="number" min="0" max="59" value="1" aria-label="Interval minutes">
+      <span class="sep">:</span>
+      <input id="ss" type="number" min="0" max="59" value="20" aria-label="Interval seconds">
+      <label for="rot">Rotations</label>
+      <input id="rot" type="number" min="1" placeholder="loop" aria-label="Number of rotations, leave blank to loop forever">
+      <button type="button" class="btn secondary" id="applyBtn">Apply</button>
+    </div>
+    <div class="clock" id="clock" role="timer" aria-label="Time remaining at this station">1:20</div>
+    <p class="cycle" id="cycle">Station interval 1 &middot; 1:20 each</p>
+    <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="timer-btns">
+      <button type="button" class="btn" id="startBtn">Start</button>
+      <button type="button" class="btn secondary" id="resetBtn">Reset</button>
+    </div>
+    <div class="sound-row">
+      <label for="soundSel">Chime</label>
+      <select id="soundSel" aria-label="Chime sound">
+        <option value="songbird">Songbird trill</option>
+        <option value="morning">Morning birds</option>
+        <option value="chimes">Wind chimes</option>
+        <option value="marimba">Warm marimba</option>
+        <option value="loon">Lake loon call</option>
+      </select>
+      <span class="toggle" role="group" aria-label="Chime on or off">
+        <button type="button" id="soundOnBtn" aria-pressed="true">On</button>
+        <button type="button" id="soundOffBtn" aria-pressed="false">Mute</button>
+      </span>
+      <label for="vol">Volume</label>
+      <input type="range" id="vol" min="0" max="100" value="60" aria-label="Chime volume">
+      <button type="button" class="btn secondary" id="testBtn">Test chime</button>
+    </div>
+    <p class="hint">The timer loops automatically: at 0:00 it plays the chime, then restarts at 1:20. Use Pause (or the spacebar) to hold the room. Click Test to preview a chime and set the volume before students arrive.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ ROOM MAP (exact match to Room Anatomy layout) ============ */
+  var VB_W=2000, VB_H=1125;
+  // Benches / island tables (navy blocks)
+  var BLOCKS=[
+    {x:115,y:165,w:135,h:770},                 // left wall bench
+    {x:390,y:80,w:1365,h:130},                 // top bench
+    {x:390,y:265,w:390,h:195},                 // center-left upper
+    {x:875,y:265,w:390,h:195},                 // center-mid upper
+    {x:1360,y:265,w:390,h:195},                // right upper
+    {x:390,y:495,w:390,h:195},                 // center-left mid
+    {x:875,y:495,w:390,h:195},                 // center-mid mid
+    {x:1360,y:495,w:390,h:195},                // right mid
+    {x:390,y:715,w:390,h:195},                 // center-left lower
+    {x:1360,y:715,w:390,h:195}                 // right lower
+  ];
+  // Station labels at their true positions
+  var L=[
+    {t:"9 & 10",x:182,y:300},{t:"7 & 8",x:182,y:430},{t:"5 & 6",x:182,y:560},
+    {t:"3 & 4",x:182,y:730},{t:"1 & 2",x:182,y:860},
+    {t:"11 & 12",x:505,y:155},{t:"13 & 14",x:760,y:155},{t:"15 & 16",x:1015,y:155},
+    {t:"17 & 18",x:1290,y:155},{t:"19 & 20",x:1565,y:155},
+    {t:"25 & 26",x:585,y:325},{t:"27 & 28",x:585,y:420},
+    {t:"23 & 24",x:1070,y:325},{t:"29 & 30",x:1070,y:420},
+    {t:"21 & 22",x:1565,y:325},{t:"31 & 32",x:1565,y:420},
+    {t:"33 & 34",x:585,y:555},{t:"39 & 40",x:585,y:650},
+    {t:"35 & 36",x:1070,y:555},{t:"41 & 42",x:1070,y:650},
+    {t:"37 & 38",x:1565,y:555},{t:"43 & 44",x:1565,y:650},
+    {t:"49 & 50",x:585,y:775},{t:"51 & 52",x:585,y:870},
+    {t:"45 & 46",x:1565,y:775},{t:"47 & 48",x:1565,y:870}
+  ];
+  // Rotation path in question-pair order (centers of each station label)
+  var FLOW=[
+    [182,860],   // 1&2
+    [182,730],   // 3&4
+    [182,560],   // 5&6
+    [182,430],   // 7&8
+    [182,300],   // 9&10
+    [505,155],   // 11&12
+    [760,155],   // 13&14
+    [1015,155],  // 15&16
+    [1290,155],  // 17&18
+    [1565,155],  // 19&20
+    [1565,325],  // 21&22
+    [1070,325],  // 23&24
+    [585,325],   // 25&26
+    [585,420],   // 27&28
+    [1070,420],  // 29&30
+    [1565,420],  // 31&32
+    [585,555],   // 33&34
+    [1070,555],  // 35&36
+    [1565,555],  // 37&38
+    [585,650],   // 39&40
+    [1070,650],  // 41&42
+    [1565,650],  // 43&44
+    [1565,775],  // 45&46
+    [1565,870],  // 47&48
+    [585,775],   // 49&50
+    [585,870]    // 51&52
+  ];
+
+  function buildMap(){
+    var ns="http://www.w3.org/2000/svg";
+    var svg=document.createElementNS(ns,"svg");
+    svg.setAttribute("viewBox","0 0 "+VB_W+" "+VB_H);
+    svg.setAttribute("role","img");
+    svg.setAttribute("aria-label","Room map. Students start at station 1 and 2 in the lower left, move up the left bench, across the top bench, then weave through the island tables in numbered order, finishing at 51 and 52. The instructor desk is at the bottom center.");
+    var defs=document.createElementNS(ns,"defs");
+    defs.innerHTML='<marker id="ah" markerWidth="7" markerHeight="7" refX="5.2" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#A0522D"></path></marker>';
+    svg.appendChild(defs);
+
+    function rect(x,y,w,h,fill,stroke){
+      var r=document.createElementNS(ns,"rect");
+      r.setAttribute("x",x); r.setAttribute("y",y); r.setAttribute("width",w); r.setAttribute("height",h); r.setAttribute("rx",6);
+      r.setAttribute("fill",fill); if(stroke){ r.setAttribute("stroke",stroke); r.setAttribute("stroke-width",2); }
+      svg.appendChild(r);
+    }
+    function text(t,x,y,size,weight,fill,anchor){
+      var e=document.createElementNS(ns,"text");
+      e.setAttribute("x",x); e.setAttribute("y",y); e.setAttribute("text-anchor",anchor||"middle");
+      e.setAttribute("font-family","'Plus Jakarta Sans',sans-serif"); e.setAttribute("font-weight",weight);
+      e.setAttribute("font-size",size); e.setAttribute("fill",fill); e.textContent=t; svg.appendChild(e);
+    }
+
+    // blocks (white tables with navy outline)
+    BLOCKS.forEach(function(b){ rect(b.x,b.y,b.w,b.h,"#FFFFFF","#1E3D4C"); });
+    // desk (navy outline on navy-tint, brand palette only)
+    rect(875,945,390,120,"#EDF1F3","#1E3D4C");
+    text("Desk",1070,1018,30,"700","#1E3D4C");
+
+    // arrows: navy-deep casing first, then gold core w/ arrowhead
+    function seg(a,b,casing){
+      var dx=b[0]-a[0], dy=b[1]-a[1], len=Math.hypot(dx,dy)||1, gap=46;
+      var ux=dx/len, uy=dy/len;
+      var x1=a[0]+ux*gap, y1=a[1]+uy*gap, x2=b[0]-ux*gap, y2=b[1]-uy*gap;
+      var ln=document.createElementNS(ns,"line");
+      ln.setAttribute("x1",x1); ln.setAttribute("y1",y1); ln.setAttribute("x2",x2); ln.setAttribute("y2",y2);
+      var jump = len>700;
+      if(casing){
+        ln.setAttribute("stroke","#142a36"); ln.setAttribute("stroke-width",11); ln.setAttribute("stroke-linecap","round");
+      } else {
+        ln.setAttribute("stroke","#A0522D"); ln.setAttribute("stroke-width",7); ln.setAttribute("stroke-linecap","round");
+        ln.setAttribute("marker-end","url(#ah)");
+        if(jump) ln.setAttribute("stroke-dasharray","16 12");
+      }
+      svg.appendChild(ln);
+    }
+    for(var k=0;k<FLOW.length-1;k++){ seg(FLOW[k],FLOW[k+1],false); } // terra arrows, no casing
+
+    // labels (navy on white tables, easy to read)
+    L.forEach(function(o){ text(o.t,o.x,o.y,27,"800","#1E3D4C"); });
+
+    // START / FINISH badges
+    function badge(x,y,t,fill,txt){
+      var g=document.createElementNS(ns,"g");
+      var r=document.createElementNS(ns,"rect");
+      r.setAttribute("x",x-52); r.setAttribute("y",y-22); r.setAttribute("width",104); r.setAttribute("height",34); r.setAttribute("rx",17);
+      r.setAttribute("fill",fill);
+      g.appendChild(r); svg.appendChild(g);
+      text(t,x,y+3,18,"800",txt||"#FFFFFF");
+    }
+    badge(182,935,"START",  "#A0522D");            // white on terra-dark (5.6:1)
+    badge(585,935,"FINISH", "#B8924A","#142a36");  // navy-deep on gold (5.1:1)
+
+    var host=document.getElementById("mapHost"); host.innerHTML=""; host.appendChild(svg);
+  }
+
+  /* ============ ROOM MANAGER (built-in + Dry Lab + Wet Lab uploads) ============ */
+  var CUR_KEY="bio004_room_current";
+  function imgKey(r){ return "bio004_room_img_"+r; }
+  function roomName(r){ return r==="dry"?"Dry Lab":r==="wet"?"Wet Lab":"Built-in Anatomy Room"; }
+  var roomSel=document.getElementById("roomSel"),
+      fileInput=document.getElementById("roomFile"),
+      roomNote=document.getElementById("roomNote"),
+      uploadBtn=document.getElementById("uploadBtn"),
+      removeBtn=document.getElementById("removeBtn");
+
+  function renderRoom(r){
+    var host=document.getElementById("mapHost");
+    if(r==="builtin"){
+      buildMap();
+      uploadBtn.disabled=true; removeBtn.disabled=true;
+      roomNote.textContent="Built-in room is fixed.";
+    } else {
+      uploadBtn.disabled=false;
+      var data=null; try{ data=localStorage.getItem(imgKey(r)); }catch(e){}
+      if(data){
+        host.innerHTML="";
+        var img=document.createElement("img"); img.src=data; img.alt=roomName(r)+" room map"; host.appendChild(img);
+        removeBtn.disabled=false;
+        roomNote.textContent=roomName(r)+" map loaded.";
+      } else {
+        host.innerHTML='<div style="padding:46px 16px; text-align:center; color:#A0522D; font-weight:600;">No map uploaded for '+roomName(r)+' yet.<br>Click “Upload image for this room.”</div>';
+        removeBtn.disabled=true;
+        roomNote.textContent="Create your "+roomName(r)+" map (with arrows) and upload it as a PNG or JPG.";
+      }
+    }
+    try{ localStorage.setItem(CUR_KEY,r); }catch(e){}
+  }
+  function processFile(file,r){
+    var reader=new FileReader();
+    reader.onload=function(){
+      var im=new Image();
+      im.onload=function(){
+        var maxW=1800, scale=Math.min(1, maxW/im.width);
+        var c=document.createElement("canvas");
+        c.width=Math.round(im.width*scale); c.height=Math.round(im.height*scale);
+        c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+        var data;
+        try{ data=c.toDataURL("image/png"); localStorage.setItem(imgKey(r),data); }
+        catch(e){
+          try{ data=c.toDataURL("image/jpeg",0.85); localStorage.setItem(imgKey(r),data); }
+          catch(e2){ window.alert("That image is too large to save in the browser. Try a smaller or more compressed file."); return; }
+        }
+        if(roomSel.value===r) renderRoom(r);
+        roomNote.textContent=roomName(r)+" map uploaded.";
+      };
+      im.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+  roomSel.addEventListener("change",function(){ renderRoom(this.value); });
+  uploadBtn.addEventListener("click",function(){ fileInput.click(); });
+  fileInput.addEventListener("change",function(){ if(this.files && this.files[0]) processFile(this.files[0], roomSel.value); this.value=""; });
+  removeBtn.addEventListener("click",function(){
+    var r=roomSel.value; if(r==="builtin") return;
+    if(!window.confirm("Remove the uploaded "+roomName(r)+" map?")) return;
+    try{ localStorage.removeItem(imgKey(r)); }catch(e){}
+    renderRoom(r);
+  });
+  var startRoom="builtin"; try{ startRoom=localStorage.getItem(CUR_KEY)||"builtin"; }catch(e){}
+  roomSel.value=startRoom; renderRoom(startRoom);
+
+  /* ============ TIMER ============ */
+  var CFG_KEY="bio004_timer_cfg";
+  var TOTAL=80, MAXCYCLES=0, remaining=TOTAL, running=false, done=false, cycle=1, lastTs=null, raf=null;
+  var clock=document.getElementById("clock"), cycleEl=document.getElementById("cycle"),
+      bar=document.getElementById("progressBar"), startBtn=document.getElementById("startBtn");
+  var mm=document.getElementById("mm"), ss=document.getElementById("ss"), rot=document.getElementById("rot");
+  function fmt(s){ s=Math.max(0,Math.ceil(s)); var m=Math.floor(s/60), x=s%60; return m+":"+(x<10?"0":"")+x; }
+  function clampInt(v,lo,hi,def){ v=parseInt(v,10); if(isNaN(v)) return def; return Math.min(hi,Math.max(lo,v)); }
+  function render(){
+    clock.textContent = done ? "Done" : fmt(remaining);
+    clock.classList.toggle("warn", !done && remaining<=10);
+    bar.style.width = (done?0:remaining/TOTAL*100)+"%";
+    cycleEl.textContent = done ? "Practical complete"
+      : "Station interval "+cycle+(MAXCYCLES?(" of "+MAXCYCLES):"")+" · "+fmt(TOTAL)+" each";
+  }
+  function finish(){ running=false; done=true; if(raf) cancelAnimationFrame(raf); startBtn.textContent="Start"; startBtn.setAttribute("aria-pressed","false"); render(); }
+  function tick(ts){ if(!running) return; if(lastTs==null) lastTs=ts; var dt=(ts-lastTs)/1000; lastTs=ts; remaining-=dt;
+    if(remaining<=0){ playChime(); cycle++;
+      if(MAXCYCLES && cycle>MAXCYCLES){ finish(); return; }
+      remaining+=TOTAL; if(remaining<=0) remaining=TOTAL; }
+    render(); raf=requestAnimationFrame(tick); }
+  function resetTimer(){ running=false; done=false; if(raf) cancelAnimationFrame(raf); remaining=TOTAL; cycle=1; lastTs=null; startBtn.textContent="Start"; startBtn.setAttribute("aria-pressed","false"); render(); }
+  function start(){ if(running) return; if(done) resetTimer(); ensureAudio(); running=true; lastTs=null; startBtn.textContent="Pause"; startBtn.setAttribute("aria-pressed","true"); raf=requestAnimationFrame(tick); }
+  function pause(){ running=false; if(raf) cancelAnimationFrame(raf); startBtn.textContent="Resume"; startBtn.setAttribute("aria-pressed","false"); }
+  startBtn.addEventListener("click",function(){ running?pause():start(); });
+  document.getElementById("resetBtn").addEventListener("click",resetTimer);
+  document.addEventListener("keydown",function(e){ if(e.code==="Space" && !/INPUT|SELECT|TEXTAREA|BUTTON/.test(document.activeElement.tagName)){ e.preventDefault(); running?pause():start(); } });
+  function applyCfg(){
+    var m=clampInt(mm.value,0,59,1), s=clampInt(ss.value,0,59,20);
+    if(m===0 && s===0) s=1;
+    mm.value=m; ss.value=s;
+    TOTAL=m*60+s;
+    var r=parseInt(rot.value,10); MAXCYCLES=(r>0)?r:0;
+    try{ localStorage.setItem(CFG_KEY, JSON.stringify({m:m,s:s,r:MAXCYCLES})); }catch(e){}
+    resetTimer();
+  }
+  document.getElementById("applyBtn").addEventListener("click",applyCfg);
+  try{ var cfg=JSON.parse(localStorage.getItem(CFG_KEY)||"null"); if(cfg){ mm.value=cfg.m; ss.value=cfg.s; if(cfg.r) rot.value=cfg.r; TOTAL=cfg.m*60+cfg.s; MAXCYCLES=cfg.r||0; remaining=TOTAL; } }catch(e){}
+  render();
+
+  /* ============ GENTLE CHIMES (Web Audio, fuller than before) ============ */
+  var ctx=null, master=null, soundOn=true;
+  function ensureAudio(){
+    if(!ctx){ var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return; ctx=new AC();
+      master=ctx.createGain(); master.gain.value=vol()* 1.0; master.connect(ctx.destination); }
+    if(ctx.state==="suspended") ctx.resume();
+  }
+  function vol(){ return parseInt(document.getElementById("vol").value,10)/100; }
+  // a single voiced note: layered sine+triangle, soft attack, gentle decay, optional vibrato
+  function note(freq,start,dur,peak,opts){
+    opts=opts||{};
+    var o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain();
+    o1.type="sine"; o2.type=opts.tri?"triangle":"sine";
+    o1.frequency.setValueAtTime(freq,start);
+    o2.frequency.setValueAtTime(freq*(opts.detune||2.001),start); // octave-ish shimmer
+    if(opts.glide){ o1.frequency.exponentialRampToValueAtTime(freq*opts.glide,start+dur*0.6); }
+    if(opts.vib){ var v=ctx.createOscillator(), vg=ctx.createGain(); v.frequency.value=opts.vib; vg.gain.value=freq*0.015; v.connect(vg); vg.connect(o1.frequency); v.start(start); v.stop(start+dur+0.05); }
+    var atk=opts.atk||0.012;
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(peak,start+atk);
+    g.gain.exponentialRampToValueAtTime(0.0001,start+dur);
+    o1.connect(g); o2.connect(g); g.connect(master);
+    o1.start(start); o2.start(start); o1.stop(start+dur+0.05); o2.stop(start+dur+0.05);
+  }
+  var CHIMES={
+    songbird:function(t){ // brighter, fuller warble (3 layered birds)
+      note(1318,t+0.00,0.26,0.85,{vib:13,glide:1.06,tri:true});
+      note(1568,t+0.14,0.24,0.75,{vib:13,glide:1.05});
+      note(1175,t+0.30,0.34,0.85,{vib:11,glide:1.04,tri:true});
+      note(1047,t+0.54,0.40,0.8,{vib:9,glide:1.03});
+    },
+    morning:function(t){ // several overlapping chirps, lively but soft
+      var fs=[1760,1480,1976,1318,1568,1245];
+      fs.forEach(function(f,i){ note(f,t+i*0.11,0.18,0.7,{glide:1.07,vib:14,tri:i%2===0}); });
+      note(988,t+0.70,0.38,0.7,{vib:8});
+    },
+    chimes:function(t){ // pentatonic wind chimes, ringing
+      var fs=[1047,1319,1568,2093,1760];
+      fs.forEach(function(f,i){ note(f,t+i*0.13,0.9-i*0.05,0.6,{tri:false,detune:2.002,atk:0.006}); });
+    },
+    marimba:function(t){ // warm mallet triad, rounded
+      [523,659,784,1047].forEach(function(f,i){ note(f,t+i*0.10,0.5,0.85,{tri:true,detune:1.0,atk:0.004}); });
+    },
+    loon:function(t){ // low gentle two-note call
+      note(420,t+0.00,0.5,0.9,{glide:1.5,vib:6,tri:true});
+      note(560,t+0.42,0.7,0.85,{glide:0.85,vib:5,tri:true});
+    }
+  };
+  function playChime(){ if(!soundOn) return; ensureAudio(); if(!ctx) return; var fn=CHIMES[document.getElementById("soundSel").value]||CHIMES.songbird; fn(ctx.currentTime); }
+
+  document.getElementById("vol").addEventListener("input",function(){ if(master) master.gain.value=vol(); });
+  document.getElementById("testBtn").addEventListener("click",function(){ ensureAudio(); playChime(); });
+  document.getElementById("soundSel").addEventListener("change",function(){ ensureAudio(); playChime(); });
+  var sOn=document.getElementById("soundOnBtn"), sOff=document.getElementById("soundOffBtn");
+  function setSound(on){ soundOn=on; sOn.setAttribute("aria-pressed",on?"true":"false"); sOff.setAttribute("aria-pressed",on?"false":"true"); if(on) ensureAudio(); }
+  sOn.addEventListener("click",function(){ setSound(true); }); sOff.addEventListener("click",function(){ setSound(false); });
+
+  /* ============ Full screen ============ */
+  document.getElementById("fsBtn").addEventListener("click",function(){ var el=document.documentElement;
+    if(!document.fullscreenElement){ (el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el); }
+    else { (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document); } });
+})();
+</script>
+
+<!-- iframe height-sender -->
+<script>
+(function(){ function sendHeight(){ try{ parent.postMessage({ id:"bio004-room-map-timer", height:document.documentElement.scrollHeight }, "*"); }catch(e){} }
+  window.addEventListener("load", sendHeight); window.addEventListener("resize", sendHeight);
+  if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); } })();
+</script>
+</body>
+</html>

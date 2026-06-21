@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 004 Lab Practical Answer Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3D4C; --navy-deep:#142a36; --navy-tint:#EDF1F3;
+    --gold:#B8924A; --terra:#C2734D; --terra-dark:#A0522D;
+    --white:#FFFFFF; --offwhite:#FAFAF9;
+    --rest-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--navy); background:var(--offwhite); line-height:1.45; -webkit-font-smoothing:antialiased;}
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--navy); color:#fff; padding:10px 16px; z-index:100; border-radius:0 0 6px 0;}
+  .skip-link:focus{left:0;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 24px 64px;}
+
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--terra-dark); margin:0 0 6px;}
+  h1{font-weight:800; color:var(--navy); font-size:30px; margin:0 0 4px; line-height:1.1;}
+  .subhead{font-weight:600; color:var(--terra-dark); font-size:19px; margin:0 0 10px;}
+  .usage{font-weight:500; color:var(--navy); margin:0; font-size:15px;}
+
+  .controls{background:var(--white); border:1px solid var(--navy-tint); border-radius:10px; padding:16px 18px; margin:18px 0 22px; box-shadow:var(--rest-shadow);}
+  .controls h2{font-weight:600; color:var(--terra-dark); font-size:16px; margin:0 0 12px;}
+  .field-row{display:flex; flex-wrap:wrap; gap:14px 20px; align-items:flex-end;}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field label{font-size:12px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; color:var(--navy);}
+  .field input, .field select{font-family:inherit; font-size:15px; color:var(--navy); border:1px solid var(--navy); border-radius:6px; padding:7px 10px; background:var(--white);}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:2px; box-shadow:0 0 0 6px var(--navy-deep);}
+  .btn{font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; border-radius:6px; padding:9px 16px; border:1px solid var(--navy); background:var(--navy); color:#fff; transition:background 200ms ease, transform 200ms ease;}
+  .btn:hover{background:var(--navy-deep); transform:translateY(-1px);}
+  .btn.secondary{background:var(--white); color:var(--navy);}
+  .btn.secondary:hover{background:var(--navy-tint);}
+  .controls-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; align-items:center;}
+  .toggle{display:inline-flex; border:1px solid var(--navy); border-radius:8px; overflow:hidden;}
+  .toggle button{font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; border:none; background:var(--white); color:var(--navy); padding:9px 16px;}
+  .toggle button[aria-pressed="true"]{background:var(--navy); color:#fff;}
+  .save-note{font-size:13px; color:var(--terra-dark); font-weight:500;}
+
+  .summary{display:none;}
+  body.mode-plan .summary{display:block; background:var(--white); border:1px solid var(--navy-tint); border-radius:10px; padding:16px 18px; margin:0 0 22px; box-shadow:var(--rest-shadow);}
+  .summary h2{font-weight:600; color:var(--terra-dark); font-size:16px; margin:0 0 12px;}
+  .sum-top{display:flex; gap:26px; flex-wrap:wrap; margin-bottom:14px;}
+  .stat{display:flex; flex-direction:column; line-height:1.1;}
+  .stat .num{font-weight:800; font-size:26px; color:var(--navy);}
+  .stat .lbl{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); font-weight:700; margin-top:2px;}
+  .bars{display:flex; flex-direction:column; gap:7px;}
+  .bar-row{display:grid; grid-template-columns:160px 1fr 34px; align-items:center; gap:10px; font-size:13px;}
+  .bar-row .bt{color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .bar-track{background:var(--navy-tint); border-radius:4px; height:16px; overflow:hidden;}
+  .bar-fill{height:100%; background:var(--navy); border-radius:4px; min-width:2px;}
+  .bar-fill.flag{background:var(--terra-dark);}
+  .bar-row .bn{font-weight:700; color:var(--navy); text-align:right;}
+  .sum-caption{font-weight:500; font-size:13px; color:var(--navy); margin:12px 0 0;}
+
+  .lab-band{display:inline-block; font-weight:800; font-size:15px; color:var(--white); background:var(--terra-dark); border-radius:6px; padding:4px 12px; margin-bottom:10px;}
+  .meta{display:flex; justify-content:flex-start; gap:40px; flex-wrap:wrap; border-bottom:1px solid var(--navy); padding-bottom:10px; margin-bottom:16px;}
+  .meta .blk{flex:1 1 240px; font-size:14px;}
+  .meta .blk strong{display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--terra-dark); margin-bottom:3px;}
+  .meta .ruled{border-bottom:1px solid var(--navy); min-height:20px;}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; grid-auto-flow:column; gap:10px 26px;}
+  .station{break-inside:avoid; padding:7px 0 8px; border-bottom:1px solid var(--navy-tint);}
+  .st-head{display:flex; align-items:baseline; gap:8px; margin-bottom:3px;}
+  .st-num{font-weight:800; color:var(--navy); font-size:14px; min-width:78px;}
+  .st-region{flex:1; display:flex; align-items:baseline; gap:6px;}
+  .st-region .lab{font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); font-weight:700; white-space:nowrap;}
+  .lab-plan{display:none;} .lab-student{display:inline;}
+  body.mode-plan .lab-plan{display:inline;} body.mode-plan .lab-student{display:none;}
+  .st-region .line{flex:1; border-bottom:1px dotted var(--navy); min-height:14px; font-size:12px; color:var(--navy); padding-left:2px;}
+  .answers{display:flex; flex-direction:column; gap:7px; margin-top:5px;}
+  .ans{display:flex; align-items:baseline; gap:8px;}
+  .ans .q{font-size:13px; font-weight:700; color:var(--terra-dark); min-width:24px;}
+  .ans .line{flex:1; border-bottom:1px solid var(--navy); min-height:20px; font-size:13px; color:var(--navy); padding:0 2px;}
+
+  .keywrap{margin-top:5px; display:none;}
+  body.mode-plan .keywrap{display:flex; flex-direction:column; gap:8px;}
+  .keywrap input, .keywrap select{font-family:inherit; font-size:12px; color:var(--navy); border:1px solid var(--navy); border-radius:5px; padding:5px 6px; background:var(--white);}
+  .qblock{border-left:3px solid var(--navy-tint); padding-left:8px; display:flex; flex-direction:column; gap:5px;}
+  .qblock .qlabel{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark);}
+  .qline{display:flex; gap:6px; flex-wrap:wrap;}
+  .qline .stemSel{flex:1.4 1 0; min-width:0;}
+  .qline .topicSel{flex:1 1 0; min-width:0;}
+  .qline .ansIn{flex:1.2 1 0; min-width:0;}
+  .region-input-wrap{display:none; margin-top:3px;}
+  body.mode-plan .region-input-wrap{display:flex;}
+  .region-input-wrap input{font-family:inherit; font-size:12px; border:1px solid var(--navy); border-radius:5px; padding:4px 7px; width:100%; color:var(--navy); background:var(--white);}
+
+  .footer-sign{margin-top:22px; font-weight:500; font-size:13px; color:var(--navy);}
+
+  #cardArea{display:none;}
+  .card-title{display:none;}
+  .qcards{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .qcard{border:1.5px solid var(--navy); border-radius:8px; padding:12px 14px; break-inside:avoid; display:flex; flex-direction:column; gap:6px; min-height:120px;}
+  .qc-top{display:flex; justify-content:space-between; align-items:center; gap:8px;}
+  .qc-station{font-weight:800; font-size:14px; color:var(--navy);}
+  .qc-topic{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); border:1px solid var(--terra-dark); border-radius:10px; padding:2px 8px; white-space:nowrap;}
+  .qc-stem{font-weight:700; font-size:16px; color:var(--navy); line-height:1.25;}
+  .qc-key{font-weight:600; font-size:12px; color:var(--terra-dark); margin-top:auto; border-top:1px dashed var(--navy-tint); padding-top:6px;}
+
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+  @media (max-width:640px){ .grid{grid-template-columns:1fr; grid-template-rows:none !important; grid-auto-flow:row;} }
+
+  @media print{
+    @page{size:Letter portrait; margin:0.45in 0.5in;}
+    body{background:#fff; font-size:10px;}
+    .wrap{max-width:none; margin:0; padding:0;}
+    .no-print,.controls,.summary,.skip-link{display:none !important;}
+    .keywrap,.region-input-wrap{display:none !important;}
+    .lab-plan{display:none !important;} .lab-student{display:inline !important;}
+    body.mode-plan .answers .line{min-height:18px !important;}
+    #cardArea{display:none !important;}
+    h1{font-size:19px;} .subhead{font-size:13px; margin-bottom:5px;} .usage{font-size:10px;}
+    .lab-band{font-size:13px; margin-bottom:7px;}
+    .meta{margin-bottom:9px; padding-bottom:6px;}
+    .grid{gap:3px 22px;} .station{padding:3px 0 4px;} .st-num{font-size:11px; min-width:70px;}
+    .ans .line{min-height:16px;} .answers{gap:5px; margin-top:3px;}
+    .footer-sign{margin-top:10px; font-size:10px;}
+    body.printing-cards #sheet{display:none !important;}
+    body.printing-cards header .usage{display:none !important;}
+    body.printing-cards #cardArea{display:block !important;}
+    body.printing-cards .card-title{display:block; font-weight:800; font-size:16px; color:var(--navy); margin:0 0 12px;}
+    body.printing-cards .qcards{gap:10px;}
+  }
+</style>
+</head>
+<body class="mode-plan">
+<a class="skip-link" href="#sheet">Skip to answer sheet</a>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">BIO 004 &middot; Human Anatomy</p>
+    <h1>Lab Practical Answer Sheet</h1>
+    <p class="subhead" id="subhead-display">Combined Practical</p>
+    <p class="usage">Two identifications per station. Confirm the region on the cue line before you write, then record both answers. Move only when the station is called.</p>
+  </header>
+
+  <section class="controls no-print" aria-label="Planning controls">
+    <h2>Planner controls</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="sheetMode">Sheet</label>
+        <select id="sheetMode">
+          <option value="combined">Combined practical (questions 1&ndash;52)</option>
+          <option value="wet">Wet Lab (questions 1&ndash;26)</option>
+          <option value="dry">Dry Lab (questions 1&ndash;26)</option>
+        </select>
+      </div>
+    </div>
+    <div class="controls-actions">
+      <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);">View:</span>
+      <div class="toggle" role="group" aria-label="Switch view">
+        <button type="button" id="btnPlan" aria-pressed="true">Planner</button>
+        <button type="button" id="btnStudent" aria-pressed="false">Student (blank)</button>
+      </div>
+      <button type="button" class="btn" id="btnPrint">Print student sheet</button>
+      <button type="button" class="btn" id="btnCards">Print cards</button>
+      <button type="button" class="btn secondary" id="btnExport">Export CSV</button>
+      <button type="button" class="btn secondary" id="btnClear">Clear this sheet</button>
+      <span class="save-note" id="saveNote" aria-live="polite">Each sheet (Combined, Wet, Dry) saves separately on this computer.</span>
+    </div>
+  </section>
+
+  <section class="summary no-print" aria-label="Question balance summary">
+    <h2>Question balance &middot; <span id="sumModeLbl">Combined</span></h2>
+    <div class="sum-top">
+      <div class="stat"><span class="num" id="sumTotal">0</span><span class="lbl" id="sumTotalLbl">tagged / 52</span></div>
+      <div class="stat"><span class="num" id="sumID">0</span><span class="lbl">ID</span></div>
+      <div class="stat"><span class="num" id="sumBeyond">0</span><span class="lbl">Beyond ID</span></div>
+      <div class="stat"><span class="num" id="sumTopics">0</span><span class="lbl">topics used</span></div>
+    </div>
+    <div id="sumBars" class="bars" aria-live="polite"></div>
+    <p class="sum-caption" id="sumCaption" aria-live="polite"></p>
+  </section>
+
+  <main id="sheet">
+    <span class="lab-band" id="labBand">Combined Practical</span>
+    <div class="meta">
+      <div class="blk"><strong>Name</strong><div class="ruled">&nbsp;</div></div>
+      <div class="blk"><strong>Lab Exam #</strong><div class="ruled">&nbsp;</div></div>
+    </div>
+    <div class="grid" id="grid" aria-label="Stations"></div>
+    <p class="footer-sign">Dr. Sharilyn Rennie</p>
+  </main>
+
+  <section id="cardArea" aria-hidden="true">
+    <p class="card-title" id="cardTitle">Station Question Cards</p>
+    <div class="qcards" id="qcards"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="bio004_practical_sheet_v3";
+  var MODES={
+    combined:{label:"Combined Practical", stations:26},
+    wet:{label:"Wet Lab", stations:13},
+    dry:{label:"Dry Lab", stations:13}
+  };
+
+  var SEED_STEMS=[
+    "ID this cell","ID this tissue","ID this region","ID this bone","ID this bone detail",
+    "ID this bone & bone detail","ID this muscle","Name this muscle","ID this organ","ID this structure",
+    "ID this vessel","ID this nerve","ID the structure the arrow indicates",
+    "Name one function","Name the function of this cell","Name this tissue",
+    "Name one location of this tissue","Name one function of this tissue",
+    "Name the origin of this muscle","Name the insertion of this muscle",
+    "Name the action of this muscle","Name the bone this articulates with"
+  ];
+  var SEED_TOPICS=[
+    "Upper extremity","Lower extremity","Axial skeleton","Head & neck","Thorax","Abdomen",
+    "Pelvis","Back","Cells & tissues (histology)","Nervous system","Cardiovascular","Surface anatomy"
+  ];
+
+  var state={ mode:"combined", customStems:[], customTopics:[],
+    modes:{ combined:{sel:{},regions:{}}, wet:{sel:{},regions:{}}, dry:{sel:{},regions:{}} } };
+  try{
+    var saved=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(saved){
+      state.mode=saved.mode||"combined";
+      state.customStems=saved.customStems||[];
+      state.customTopics=saved.customTopics||[];
+      ["combined","wet","dry"].forEach(function(m){
+        if(saved.modes&&saved.modes[m]) state.modes[m]={sel:saved.modes[m].sel||{},regions:saved.modes[m].regions||{}};
+      });
+    }
+  }catch(e){}
+
+  function cur(){ return state.modes[state.mode]; }
+  function stemList(){ return SEED_STEMS.concat(state.customStems); }
+  function topicList(){ return SEED_TOPICS.concat(state.customTopics); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function slot(id){ var d=cur(); return d.sel[id]||(d.sel[id]={stem:"",topic:"",ans:""}); }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+
+  function optionHtml(list,current){
+    var html='<option value="">&mdash; select &mdash;</option>';
+    list.forEach(function(v){ html+='<option value="'+esc(v)+'"'+(v===current?' selected':'')+'>'+esc(v)+'</option>'; });
+    html+='<option value="__add__">+ Add new&hellip;</option>'; return html;
+  }
+  function qBlock(i,n,qnum){
+    var id=i+"-"+n, s=slot(id);
+    return '<div class="qblock">'+
+      '<span class="qlabel" aria-hidden="true">Question '+qnum+'</span>'+
+      '<div class="qline">'+
+        '<select class="stemSel" data-stem="'+id+'" aria-label="Station '+i+' question '+qnum+' stem">'+optionHtml(stemList(),s.stem)+'</select>'+
+        '<select class="topicSel" data-topic="'+id+'" aria-label="Station '+i+' question '+qnum+' topic">'+optionHtml(topicList(),s.topic)+'</select>'+
+        '<input type="text" class="ansIn" data-ans="'+id+'" aria-label="Station '+i+' question '+qnum+' answer key" placeholder="answer key" value="'+esc(s.ans)+'">'+
+      '</div>'+
+    '</div>';
+  }
+
+  var grid=document.getElementById("grid");
+  function buildGrid(){
+    var N=MODES[state.mode].stations;
+    grid.style.gridTemplateRows="repeat("+Math.ceil(N/2)+",auto)";
+    grid.setAttribute("aria-label","Stations 1 to "+N);
+    grid.innerHTML="";
+    for(var i=1;i<=N;i++){
+      var q1=(i-1)*2+1, q2=(i-1)*2+2;
+      var st=document.createElement("section");
+      st.className="station"; st.setAttribute("aria-label","Station "+i);
+      st.innerHTML=
+        '<div class="st-head">'+
+          '<span class="st-num">Station '+i+'</span>'+
+          '<span class="st-region"><span class="lab"><span class="lab-plan">Region / System:</span><span class="lab-student">Note:</span></span>'+
+            '<span class="line region-display" data-r="'+i+'">&nbsp;</span></span>'+
+        '</div>'+
+        '<div class="region-input-wrap no-print"><input type="text" aria-label="Station '+i+' region or note (planner)" placeholder="Region / specimen note (e.g., cadaver, model)" data-region="'+i+'" value="'+esc(cur().regions[i]||"")+'"></div>'+
+        '<div class="answers">'+
+          '<div class="ans"><span class="q" aria-hidden="true">'+q1+'.</span><span class="line ansline" data-a="'+i+'-1">&nbsp;</span></div>'+
+          '<div class="ans"><span class="q" aria-hidden="true">'+q2+'.</span><span class="line ansline" data-a="'+i+'-2">&nbsp;</span></div>'+
+        '</div>'+
+        '<div class="keywrap no-print">'+ qBlock(i,1,q1)+ qBlock(i,2,q2) +'</div>';
+      grid.appendChild(st);
+    }
+  }
+
+  function refreshMenus(){
+    document.querySelectorAll("select[data-stem]").forEach(function(sel){ sel.innerHTML=optionHtml(stemList(),slot(sel.getAttribute("data-stem")).stem); });
+    document.querySelectorAll("select[data-topic]").forEach(function(sel){ sel.innerHTML=optionHtml(topicList(),slot(sel.getAttribute("data-topic")).topic); });
+  }
+
+  function reflect(){
+    var M=MODES[state.mode], N=M.stations;
+    document.getElementById("subhead-display").textContent=M.label+" · questions 1–"+(N*2);
+    document.getElementById("labBand").textContent=M.label;
+    document.getElementById("sumModeLbl").textContent=M.label;
+    document.getElementById("sumTotalLbl").textContent="tagged / "+(N*2);
+    var planning=document.body.classList.contains("mode-plan");
+    for(var i=1;i<=N;i++){
+      var disp=document.querySelector('.region-display[data-r="'+i+'"]');
+      if(disp){ disp.innerHTML=(planning&&cur().regions[i])?esc(cur().regions[i]):"&nbsp;"; }
+      for(var n=1;n<=2;n++){
+        var s=slot(i+"-"+n), line=document.querySelector('.ansline[data-a="'+i+"-"+n+'"]');
+        if(line){ line.innerHTML=(planning&&s.ans)?esc(s.ans):"&nbsp;"; }
+      }
+    }
+    computeSummary();
+  }
+
+  function isID(stem){ return /^id\b/i.test((stem||"").trim()); }
+  function computeSummary(){
+    var N=MODES[state.mode].stations;
+    var total=0,id=0,beyond=0,noTopic=0,topics={};
+    for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
+      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.topic)) continue;
+      total++; if(s.stem){ isID(s.stem)?id++:beyond++; } else beyond++;
+      if(s.topic){ var k=s.topic.toLowerCase(); if(!topics[k]) topics[k]={name:s.topic,count:0}; topics[k].count++; } else noTopic++;
+    }
+    document.getElementById("sumTotal").textContent=total;
+    document.getElementById("sumID").textContent=id;
+    document.getElementById("sumBeyond").textContent=beyond;
+    document.getElementById("sumTopics").textContent=Object.keys(topics).length;
+    var rows=Object.keys(topics).map(function(k){return topics[k];});
+    if(noTopic>0) rows.push({name:"(no topic yet)",count:noTopic,untagged:true});
+    rows.sort(function(a,b){return b.count-a.count;});
+    var max=rows.reduce(function(m,r){return Math.max(m,r.count);},0);
+    var bars=document.getElementById("sumBars"); bars.innerHTML="";
+    rows.forEach(function(r){
+      var pct=max?Math.round(r.count/max*100):0;
+      var flag=(max>=4&&r.count===max&&!r.untagged)?" flag":"";
+      var row=document.createElement("div"); row.className="bar-row";
+      row.innerHTML='<span class="bt">'+esc(r.name)+'</span><span class="bar-track"><span class="bar-fill'+flag+'" style="width:'+pct+'%"></span></span><span class="bn">'+r.count+'</span>';
+      bars.appendChild(row);
+    });
+    var cap=document.getElementById("sumCaption");
+    if(total===0){ cap.textContent="Pick a question stem and topic for each slot to see the balance build here."; }
+    else{
+      var parts=[id+" of "+total+" questions are ID, "+beyond+" beyond ID."];
+      var tr=rows.filter(function(r){return !r.untagged;});
+      if(tr.length){ var big=tr[0], avg=total/Math.max(tr.length,1);
+        if(big.count>=4&&big.count>=2*avg) parts.push('"'+big.name+'" is carrying '+big.count+' questions, well above the average of '+avg.toFixed(1)+' per topic. Consider redistributing.');
+        else parts.push("Spread looks reasonably even across "+tr.length+" topics."); }
+      if(noTopic>0) parts.push(noTopic+" tagged question"+(noTopic>1?"s":"")+" still need a topic.");
+      cap.textContent=parts.join(" ");
+    }
+  }
+
+  // events
+  grid.addEventListener("change",function(e){
+    var t=e.target;
+    if(t.matches("select[data-stem],select[data-topic]")){
+      var isStem=t.hasAttribute("data-stem"), id=t.getAttribute(isStem?"data-stem":"data-topic");
+      if(t.value==="__add__"){
+        var v=(window.prompt(isStem?"Add a new question stem:":"Add a new topic:")||"").trim();
+        if(v){ var arr=isStem?state.customStems:state.customTopics, all=isStem?stemList():topicList();
+          if(all.indexOf(v)===-1) arr.push(v);
+          slot(id)[isStem?"stem":"topic"]=v; save(); refreshMenus(); reflect();
+        } else { t.value=slot(id)[isStem?"stem":"topic"]; }
+        return;
+      }
+      slot(id)[isStem?"stem":"topic"]=t.value; save(); reflect();
+    }
+  });
+  grid.addEventListener("input",function(e){
+    var t=e.target;
+    if(t.matches("input[data-ans]")){ slot(t.getAttribute("data-ans")).ans=t.value; save(); reflect(); }
+    else if(t.matches("input[data-region]")){ cur().regions[t.getAttribute("data-region")]=t.value; save(); reflect(); }
+  });
+
+  // sheet mode
+  var sheetMode=document.getElementById("sheetMode");
+  sheetMode.value=state.mode;
+  sheetMode.addEventListener("change",function(){ state.mode=this.value; save(); buildGrid(); reflect(); });
+
+  // view toggle
+  var btnPlan=document.getElementById("btnPlan"), btnStudent=document.getElementById("btnStudent");
+  function setMode(plan){ document.body.classList.toggle("mode-plan",plan); btnPlan.setAttribute("aria-pressed",plan?"true":"false"); btnStudent.setAttribute("aria-pressed",plan?"false":"true"); reflect(); }
+  btnPlan.addEventListener("click",function(){ setMode(true); });
+  btnStudent.addEventListener("click",function(){ setMode(false); });
+
+  // printing
+  document.getElementById("btnPrint").addEventListener("click",function(){ document.body.classList.add("printing-student"); window.print(); });
+  document.getElementById("btnCards").addEventListener("click",function(){ buildCards(); document.body.classList.add("printing-cards"); window.print(); });
+  window.addEventListener("afterprint",function(){ document.body.classList.remove("printing-student","printing-cards"); });
+
+  function buildCards(){
+    var host=document.getElementById("qcards"); host.innerHTML="";
+    var N=MODES[state.mode].stations, lab=MODES[state.mode].label;
+    document.getElementById("cardTitle").textContent=lab+" — Station Cards";
+    for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
+      var s=slot(i+"-"+n); if(!(s.stem||s.ans)) continue;
+      var qnum=(i-1)*2+n;
+      var card=document.createElement("div"); card.className="qcard";
+      card.innerHTML='<div class="qc-top"><span class="qc-station">'+lab+' &middot; Station '+i+' &middot; Q'+qnum+'</span>'+
+        (s.topic?'<span class="qc-topic">'+esc(s.topic)+'</span>':'')+'</div>'+
+        '<div class="qc-stem">'+esc(s.stem||"(question)")+'</div>'+
+        (s.ans?'<div class="qc-key">Key: '+esc(s.ans)+'</div>':'');
+      host.appendChild(card);
+    }
+    if(!host.children.length) host.innerHTML='<div class="qcard"><div class="qc-stem">No questions entered yet.</div></div>';
+  }
+
+  document.getElementById("btnExport").addEventListener("click",function(){
+    var N=MODES[state.mode].stations, lab=MODES[state.mode].label;
+    var rows=[["Lab","Station","Question","Topic","Stem","Answer","Type"]];
+    for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
+      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.topic)) continue;
+      rows.push([lab,i,(i-1)*2+n,s.topic||"",s.stem||"",s.ans||"",s.stem?(isID(s.stem)?"ID":"Beyond ID"):""]);
+    }
+    var csv=rows.map(function(r){ return r.map(function(c){ c=String(c); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(","); }).join("\r\n");
+    var fn=lab.replace(/[^a-z0-9]+/gi,"-").toLowerCase();
+    var blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=fn+"-questions.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+    document.getElementById("saveNote").textContent="Exported "+(rows.length-1)+" "+lab+" question rows to CSV.";
+  });
+
+  document.getElementById("btnClear").addEventListener("click",function(){
+    var lab=MODES[state.mode].label;
+    if(!window.confirm("Clear all saved questions and notes for "+lab+"? Other sheets and your added menu items stay.")) return;
+    state.modes[state.mode]={sel:{},regions:{}}; save(); buildGrid(); reflect();
+    document.getElementById("saveNote").textContent="Cleared "+lab+". Notes save again as you type.";
+  });
+
+  buildGrid();
+  reflect();
+})();
+</script>
+
+<!-- iframe height-sender -->
+<script>
+(function(){ function sendHeight(){ try{ parent.postMessage({ id:"bio004-practical-answer-sheet", height:document.documentElement.scrollHeight }, "*"); }catch(e){} }
+  window.addEventListener("load", sendHeight); window.addEventListener("resize", sendHeight);
+  if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); } })();
+</script>
+</body>
+</html>

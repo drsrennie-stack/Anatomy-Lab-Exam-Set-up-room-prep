@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1125" font-family="Arial,Helvetica,sans-serif">
+<rect x="0" y="0" width="2000" height="1125" fill="#FAFAF9"/>
+<defs><marker id="ah" markerWidth="7" markerHeight="7" refX="5.2" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#A0522D"/></marker></defs>
+<rect x="115" y="165" width="135" height="770" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="390" y="80" width="1365" height="130" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="390" y="265" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="875" y="265" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="1360" y="265" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="390" y="495" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="875" y="495" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="1360" y="495" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="390" y="715" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="1360" y="715" width="390" height="195" rx="8" fill="#FFFFFF" stroke="#1E3D4C" stroke-width="3"/>
+<rect x="875" y="945" width="390" height="120" rx="8" fill="#EDF1F3" stroke="#1E3D4C" stroke-width="3"/>
+<text x="1070" y="1027" text-anchor="middle" font-size="30" font-weight="700" fill="#1E3D4C">Desk</text>
+<line x1="182.0" y1="812.0" x2="182.0" y2="778.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="182.0" y1="682.0" x2="182.0" y2="608.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="182.0" y1="512.0" x2="182.0" y2="478.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="182.0" y1="382.0" x2="182.0" y2="348.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="225.8" y1="280.3" x2="461.2" y2="174.7" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="553.0" y1="155.0" x2="712.0" y2="155.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="808.0" y1="155.0" x2="967.0" y2="155.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1063.0" y1="155.0" x2="1242.0" y2="155.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1338.0" y1="155.0" x2="1517.0" y2="155.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1565.0" y1="203.0" x2="1565.0" y2="277.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1517.0" y1="325.0" x2="1118.0" y2="325.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1022.0" y1="325.0" x2="633.0" y2="325.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="585.0" y1="373.0" x2="585.0" y2="372.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="633.0" y1="420.0" x2="1022.0" y2="420.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1118.0" y1="420.0" x2="1517.0" y2="420.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1565.0" y1="468.0" x2="1565.0" y2="507.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1517.0" y1="555.0" x2="1118.0" y2="555.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1022.0" y1="555.0" x2="633.0" y2="555.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="585.0" y1="603.0" x2="585.0" y2="602.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="633.0" y1="650.0" x2="1022.0" y2="650.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1118.0" y1="650.0" x2="1517.0" y2="650.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1565.0" y1="698.0" x2="1565.0" y2="727.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1565.0" y1="823.0" x2="1565.0" y2="822.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<line x1="1517.2" y1="865.4" x2="632.8" y2="779.6" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)" stroke-dasharray="16 12"/>
+<line x1="585.0" y1="823.0" x2="585.0" y2="822.0" stroke="#A0522D" stroke-width="7" stroke-linecap="round" marker-end="url(#ah)"/>
+<text x="182" y="309" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">9 &amp; 10</text>
+<text x="182" y="439" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">7 &amp; 8</text>
+<text x="182" y="569" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">5 &amp; 6</text>
+<text x="182" y="739" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">3 &amp; 4</text>
+<text x="182" y="869" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">1 &amp; 2</text>
+<text x="505" y="164" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">11 &amp; 12</text>
+<text x="760" y="164" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">13 &amp; 14</text>
+<text x="1015" y="164" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">15 &amp; 16</text>
+<text x="1290" y="164" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">17 &amp; 18</text>
+<text x="1565" y="164" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">19 &amp; 20</text>
+<text x="585" y="334" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">25 &amp; 26</text>
+<text x="585" y="429" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">27 &amp; 28</text>
+<text x="1070" y="334" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">23 &amp; 24</text>
+<text x="1070" y="429" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">29 &amp; 30</text>
+<text x="1565" y="334" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">21 &amp; 22</text>
+<text x="1565" y="429" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">31 &amp; 32</text>
+<text x="585" y="564" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">37 &amp; 38</text>
+<text x="585" y="659" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">39 &amp; 40</text>
+<text x="1070" y="564" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">35 &amp; 36</text>
+<text x="1070" y="659" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">41 &amp; 42</text>
+<text x="1565" y="564" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">33 &amp; 34</text>
+<text x="1565" y="659" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">43 &amp; 44</text>
+<text x="585" y="784" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">49 &amp; 50</text>
+<text x="585" y="879" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">51 &amp; 52</text>
+<text x="1565" y="784" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">45 &amp; 46</text>
+<text x="1565" y="879" text-anchor="middle" font-size="27" font-weight="800" fill="#1E3D4C">47 &amp; 48</text>
+<rect x="130" y="913" width="104" height="34" rx="17" fill="#A0522D"/><text x="182" y="939" text-anchor="middle" font-size="18" font-weight="800" fill="#FFFFFF">START</text>
+<rect x="533" y="913" width="104" height="34" rx="17" fill="#B8924A"/><text x="585" y="939" text-anchor="middle" font-size="18" font-weight="800" fill="#142a36">FINISH</text>
+</svg>
