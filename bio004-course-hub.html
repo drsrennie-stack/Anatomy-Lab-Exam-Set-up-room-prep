@@ -9,118 +9,145 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#1E3D4C; --navy-deep:#142a36; --navy-tint:#EDF1F3;
-    --gold:#B8924A; --terra:#C2734D; --terra-dark:#A0522D;
-    --white:#FFFFFF; --offwhite:#FAFAF9;
-    --rest-shadow:0 1px 3px rgba(0,0,0,0.08);
-    --hover-shadow:0 8px 16px rgba(0,0,0,0.10);
+    --navy:#0B1530; --navy-deep:#060A18; --navy-tint:#EAECEF;
+    --gold:#C9A14A; --terra:#8B3A2E; --terra-dark:#8B3A2E;
+    --terra-tint:#F3E7E3; --gray:#6B7180; --white:#FFFFFF; --offwhite:#FFFFFF;
+    --rest-shadow:0 1px 3px rgba(11,21,48,0.06);
+    --hover-shadow:0 10px 22px rgba(11,21,48,0.12);
   }
   *{box-sizing:border-box;}
   html,body{margin:0; padding:0;}
   body{font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--navy); background:var(--offwhite); line-height:1.5; -webkit-font-smoothing:antialiased;}
   .skip-link{position:absolute; left:-999px; top:0; background:var(--navy); color:#fff; padding:10px 16px; z-index:100; border-radius:0 0 6px 0;}
   .skip-link:focus{left:0;}
-  .wrap{max-width:1040px; margin:0 auto; padding:30px 24px 70px;}
+  .wrap{max-width:1060px; margin:0 auto; padding:34px 24px 72px;}
   a{color:inherit;}
   :focus-visible{outline:3px solid var(--gold); outline-offset:3px; box-shadow:0 0 0 6px var(--navy-deep);}
 
-  header.hub{margin-bottom:8px;}
-  .backlink{margin:0 0 10px;}
-  .backlink a{font-weight:700; font-size:13px; color:var(--terra-dark); text-decoration:none;}
+  header.hub{margin-bottom:30px; max-width:760px;}
+  .backlink{margin:0 0 14px;}
+  .backlink a{font-weight:700; font-size:13px; color:var(--terra-dark); text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
   .backlink a:hover{text-decoration:underline;}
-  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--terra-dark); margin:0 0 6px;}
-  h1{font-weight:800; color:var(--navy); font-size:34px; margin:0 0 6px; line-height:1.08;}
-  .lead{font-weight:500; color:var(--navy); font-size:17px; margin:0; max-width:680px;}
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--terra-dark); margin:0 0 10px; display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:""; width:26px; height:2px; background:var(--terra-dark); display:inline-block;}
+  h1{font-weight:800; color:var(--navy); font-size:44px; margin:0 0 10px; line-height:1.04; letter-spacing:-0.01em;}
+  h1 .a{color:var(--terra);}
+  .lead{font-weight:500; color:var(--navy); font-size:18px; margin:0 0 16px;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{font-size:12px; font-weight:700; color:var(--navy); background:var(--white); border:1px solid var(--navy-tint); border-radius:20px; padding:5px 12px;}
 
-  section.group{margin-top:36px;}
-  .group-head{display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--navy); padding-bottom:8px; margin-bottom:18px;}
-  .group-head h2{font-weight:800; color:var(--navy); font-size:20px; margin:0;}
-  .group-head .count{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--terra-dark);}
+  section.group{margin-top:34px;}
+  .group-label{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--terra-dark); margin:0 0 14px; display:flex; align-items:center; gap:10px;}
+  .group-label::after{content:""; flex:1; height:1px; background:var(--navy-tint);}
 
-  .cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:16px;}
-  .card{display:flex; flex-direction:column; gap:8px; background:var(--white); border:1px solid var(--navy); border-radius:12px; padding:18px 18px 16px; text-decoration:none; box-shadow:var(--rest-shadow); transition:transform 200ms ease, box-shadow 200ms ease;}
-  a.card:hover{transform:translateY(-2px); box-shadow:var(--hover-shadow);}
-  .card .ic{width:38px; height:38px; border-radius:9px; background:var(--navy-tint); display:flex; align-items:center; justify-content:center; margin-bottom:2px;}
-  .card .ic svg{width:22px; height:22px;}
-  .card h3{font-weight:700; color:var(--navy); font-size:17px; margin:0;}
-  .card p{font-weight:500; color:var(--navy); font-size:13.5px; margin:0;}
-  .card .go{margin-top:auto; font-weight:800; font-size:13px; color:var(--terra-dark); display:inline-flex; align-items:center; gap:6px; padding-top:8px;}
-  .card .go::after{content:"\2192";}
+  .cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:18px;}
+  .card{position:relative; display:flex; flex-direction:column; gap:10px; background:var(--white); border:1px solid var(--navy-tint); border-radius:14px; padding:22px; text-decoration:none; box-shadow:var(--rest-shadow); transition:transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease; min-height:186px;}
+  .card{border-color:#8C90A0;}
+  a.card:hover{transform:translateY(-3px); box-shadow:var(--hover-shadow); border-color:var(--terra-dark);}
+  .topline{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .ic{width:46px; height:46px; border-radius:12px; background:var(--terra-tint); display:flex; align-items:center; justify-content:center;}
+  .ic svg{width:25px; height:25px;}
+  .brandbar{display:flex; align-items:center; gap:14px; text-decoration:none; padding-bottom:18px; margin-bottom:18px; border-bottom:.5px solid rgba(11,21,48,.10);}
+  .brandbar svg{height:46px; width:auto; display:block;}
+  .brandbar .bt{display:flex; flex-direction:column; gap:2px;}
+  .brandbar .bt .t{font-size:22px; font-weight:800; letter-spacing:-.02em; color:var(--navy); line-height:1;}
+  .brandbar .bt .t .a{color:var(--terra);}
+  .brandbar .bt .s{font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--navy); opacity:.72;}
+  .card h3{font-weight:800; color:var(--navy); font-size:19px; margin:2px 0 0; line-height:1.18;}
+  .card p{font-weight:500; color:var(--gray); font-size:13.5px; margin:0;}
+  .foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px;}
+  .go{font-weight:800; font-size:13px; color:var(--terra-dark); display:inline-flex; align-items:center; gap:7px;}
+  .go::after{content:"\2192"; font-size:15px;}
+  .status{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--terra-dark);}
+  .status .dot{width:8px; height:8px; border-radius:50%; background:var(--terra-dark); box-shadow:0 0 0 3px rgba(160,82,45,0.18);}
 
-  .card.soon{border:1px dashed #9AA6AD; background:var(--offwhite); cursor:default; box-shadow:none;}
-  .card.soon h3, .card.soon p{color:#5C6B73;}
+  .card.soon{cursor:default; box-shadow:none; background:var(--offwhite); border-style:dashed; border-color:#C7D0D5;}
   .card.soon .ic{background:#E7EBEE;}
-  .pill{align-self:flex-start; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:#FFFFFF; background:var(--terra-dark); border-radius:10px; padding:3px 9px; margin-top:auto;}
-  .pill.soon{background:#5C6B73;}
+  .card.soon h3{color:var(--gray);}
+  .card.soon .status{color:var(--gray);}
+  .card.soon .status .dot{background:var(--gray); box-shadow:none;}
 
-  footer.hub{margin-top:46px; padding-top:16px; border-top:1px solid var(--navy-tint); font-weight:500; font-size:13px; color:var(--navy);}
-
+  footer.hub{margin-top:50px; padding-top:18px; border-top:1px solid var(--navy-tint); font-weight:500; font-size:13px; color:var(--gray);}
   @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+  @media (max-width:560px){ h1{font-size:34px;} }
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="wrap">
 
+  <a class="brandbar" href="https://drsrennie-stack.github.io/course-portal-workspace/" target="_top" aria-label="Course portal, home">
+    <svg viewBox="40 10 125 148" role="img" aria-hidden="true" focusable="false"><g transform="translate(0,18)"><g transform="translate(60,0) rotate(8 0 130)"><circle cx="0" cy="20" r="10" fill="#0B1530"/><path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#0B1530"/></g><g transform="translate(100,0)"><circle cx="0" cy="10" r="11" fill="#8B3A2E"/><path d="M 0,22 C -11,22 -17,26 -17,34 C -17,52 -14,70 -12,86 C -11,108 -13,122 -15,132 L 15,132 C 13,122 11,108 12,86 C 14,70 17,52 17,34 C 17,26 11,22 0,22 Z" fill="#8B3A2E"/></g><g transform="translate(140,0) rotate(-8 0 130)"><circle cx="0" cy="20" r="10" fill="#C9A14A"/><path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#C9A14A"/></g></g></svg>
+    <span class="bt"><span class="t">Human <span class="a">Anatomy</span></span><span class="s">BIO 004 &middot; Solano Community College</span></span>
+  </a>
   <header class="hub">
-    <p class="backlink"><a href="course-portal.html" target="_top">&larr; All courses</a></p>
+    <p class="backlink"><a href="https://drsrennie-stack.github.io/course-portal-workspace/" target="_top">&larr; All courses</a></p>
     <p class="eyebrow">BIO 004 &middot; Human Anatomy</p>
-    <h1>Course Hub</h1>
-    <p class="lead">Your command center for running the course: lab exam setup, attendance, prep, and semester planning. New tools attach here as we build them.</p>
+    <h1>Course <span class="a">Hub</span></h1>
+    <p class="lead">Your command center for running the course: lab exam setup, attendance, and the tools you reach for every week.</p>
+    <div class="chips">
+      <span class="chip">Solano Community College</span>
+      <span class="chip">8-week summer</span>
+      <span class="chip">Team-Based Learning</span>
+    </div>
   </header>
 
   <main id="main">
 
     <section class="group" aria-labelledby="g-lab">
-      <div class="group-head">
-        <h2 id="g-lab">Lab Exam Setup</h2>
-        <span class="count">Ready</span>
-      </div>
+      <p class="group-label" id="g-lab">Lab Exam Setup</p>
       <div class="cards">
 
-        <a class="card" href="bio004-practical-answer-sheet.html" target="_top">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3D4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l4 4v14H5z"/><path d="M9 9h7M9 13h7M9 17h4"/></svg></span>
+        <a class="card" href="https://drsrennie-stack.github.io/Anatomy-Lab-Exam-Set-up-room-prep/bio004-practical-answer-sheet.html" target="_blank" rel="noopener">
+          <div class="topline">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#8B3A2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg></span>
+          </div>
           <h3>Answer Sheet &amp; Question Planner</h3>
-          <p>Build the practical: stems, topics, answer key, balance check. Combined (1&ndash;52) or split Wet / Dry sheets. Print student sheets and station cards, export CSV.</p>
-          <span class="go">Open</span>
+          <p>Stems, topics, answer key, and a balance check. Combined (1&ndash;52) or split Wet / Dry sheets. Print student sheets and station cards, export CSV.</p>
+          <div class="foot"><span class="go">Open</span><span class="status"><span class="dot"></span>Live</span></div>
         </a>
 
-        <a class="card" href="bio004-room-map-timer.html" target="_top">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3D4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <a class="card" href="https://drsrennie-stack.github.io/Anatomy-Lab-Exam-Set-up-room-prep/bio004-room-map-timer.html" target="_blank" rel="noopener">
+          <div class="topline">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#8B3A2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          </div>
           <h3>Room Map &amp; Rotation Timer</h3>
-          <p>Overhead map with rotation arrows (built-in, plus Dry / Wet uploads), and a flexible looping timer with a gentle chime for station changes.</p>
-          <span class="go">Open</span>
+          <p>Overhead map with rotation arrows (built-in, plus Dry / Wet uploads) and a flexible looping timer with a gentle chime for station changes.</p>
+          <div class="foot"><span class="go">Open</span><span class="status"><span class="dot"></span>Live</span></div>
         </a>
 
       </div>
     </section>
 
     <section class="group" aria-labelledby="g-ops">
-      <div class="group-head">
-        <h2 id="g-ops">Teaching Operations</h2>
-        <span class="count">Coming soon</span>
-      </div>
+      <p class="group-label" id="g-ops">Teaching Operations</p>
       <div class="cards">
 
-        <div class="card soon" role="group" aria-label="Attendance, coming soon">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#5C6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 100-6 3 3 0 000 6z"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11l2 2 4-4"/></svg></span>
+        <a class="card" href="https://drsrennie-stack.github.io/attendance/" target="_blank" rel="noopener">
+          <div class="topline">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#8B3A2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 100-6 3 3 0 000 6z"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 11l2 2 4-4"/></svg></span>
+          </div>
           <h3>Attendance</h3>
-          <p>Track lab attendance by section and date, session-only, no stored student identifiers.</p>
-          <span class="pill soon">Coming soon</span>
-        </div>
+          <p>Mark lab attendance by section and date, then export. Session-only, no student identifiers are stored.</p>
+          <div class="foot"><span class="go">Open</span><span class="status"><span class="dot"></span>Live</span></div>
+        </a>
 
         <div class="card soon" role="group" aria-label="Lab exam prep, coming soon">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#5C6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v12H4z"/><path d="M4 17l4 3 4-3"/><path d="M8 9h8M8 13h5"/></svg></span>
+          <div class="topline">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#5C6B73" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v12H4z"/><path d="M4 17l4 3 4-3"/><path d="M8 9h8M8 13h5"/></svg></span>
+          </div>
           <h3>Lab Exam Prep</h3>
           <p>Student-facing review: practice stations, drawing-based synthesis, self-check before the practical.</p>
-          <span class="pill soon">Coming soon</span>
+          <div class="foot"><span class="go">&nbsp;</span><span class="status"><span class="dot"></span>Coming soon</span></div>
         </div>
 
         <div class="card soon" role="group" aria-label="Course setup for future semesters, coming soon">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#5C6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="3.5"/></svg></span>
+          <div class="topline">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#5C6B73" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="3.5"/></svg></span>
+          </div>
           <h3>Course Setup (Future Semesters)</h3>
           <p>Reusable schedule, module map, and exam blueprint to clone and adjust each term.</p>
-          <span class="pill soon">Coming soon</span>
+          <div class="foot"><span class="go">&nbsp;</span><span class="status"><span class="dot"></span>Coming soon</span></div>
         </div>
 
       </div>
@@ -128,17 +155,13 @@
 
   </main>
 
-  <footer class="hub">
-    BIO 004 Human Anatomy &middot; Solano Community College. Built by Dr. Sharilyn Rennie.
-  </footer>
+  <footer class="hub">BIO 004 Human Anatomy &middot; Solano Community College. Built by Dr. Sharilyn Rennie.</footer>
 </div>
 
-<!-- iframe height-sender (Kajabi / GitHub Pages embed) -->
 <script>
 (function(){
   function sendHeight(){ try{ parent.postMessage({ id:"bio004-course-hub", height:document.documentElement.scrollHeight }, "*"); }catch(e){} }
-  window.addEventListener("load", sendHeight);
-  window.addEventListener("resize", sendHeight);
+  window.addEventListener("load", sendHeight); window.addEventListener("resize", sendHeight);
   if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); }
 })();
 </script>
