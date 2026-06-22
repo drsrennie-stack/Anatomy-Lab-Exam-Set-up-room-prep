@@ -67,6 +67,7 @@
   .sum-caption{font-weight:500; font-size:13px; color:var(--navy); margin:12px 0 0;}
 
   .lab-band{display:inline-block; font-weight:800; font-size:18px; color:var(--white); background:var(--terra-dark); border-radius:6px; padding:5px 14px; margin-bottom:10px;}
+  .key-banner{display:none;}
   .meta{display:flex; justify-content:flex-start; gap:40px; flex-wrap:wrap; border-bottom:1px solid var(--navy); padding-bottom:10px; margin-bottom:16px;}
   .meta .blk{flex:1 1 240px; font-size:16px;}
   .meta .blk strong{display:block; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--terra-dark); margin-bottom:3px;}
@@ -92,8 +93,8 @@
   .qblock{border-left:3px solid var(--navy-tint); padding-left:8px; display:flex; flex-direction:column; gap:5px;}
   .qblock .qlabel{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark);}
   .qline{display:flex; gap:6px; flex-wrap:wrap;}
-  .qline .stemSel{flex:1.4 1 0; min-width:0;}
-  .qline .topicSel{flex:1 1 0; min-width:0;}
+  .qline .sysSel{flex:1.1 1 0; min-width:0;}
+  .qline .stemSel{flex:1.5 1 0; min-width:0;}
   .qline .ansIn{flex:1.2 1 0; min-width:0;}
   .region-input-wrap{display:none; margin-top:3px;}
   body.mode-plan .region-input-wrap{display:flex;}
@@ -116,18 +117,25 @@
 
   @media print{
     @page{size:Letter portrait; margin:0.45in 0.5in;}
-    body{background:#fff; font-size:10px;}
+    body{background:#fff; font-size:12px;}
     .wrap{max-width:none; margin:0; padding:0;}
     .no-print,.controls,.summary,.skip-link{display:none !important;}
     .keywrap,.region-input-wrap{display:none !important;}
     .lab-plan{display:none !important;} .lab-student{display:inline !important;}
     body.mode-plan .answers .line{min-height:18px !important;}
     #cardArea{display:none !important;}
-    h1{font-size:19px;} .subhead{font-size:13px; margin-bottom:5px;} .usage{font-size:10px;}
-    .lab-band{font-size:13px; margin-bottom:7px;}
-    .meta{margin-bottom:9px; padding-bottom:6px;}
-    .grid{gap:3px 22px;} .station{padding:3px 0 4px;} .st-num{font-size:11px; min-width:70px;}
-    .ans .line{min-height:16px;} .answers{gap:5px; margin-top:3px;}
+    h1{font-size:23px;} .subhead{font-size:15px; margin-bottom:6px;} .usage{font-size:11px;}
+    .lab-band{font-size:14px; margin-bottom:8px;}
+    body.printing-key .key-banner{display:inline-block; font-weight:800; font-size:14px; color:#060A18; background:var(--gold); border-radius:6px; padding:5px 14px; margin:0 0 8px 8px;}
+    body.printing-key .ans .line, body.printing-key .st-region .line{color:var(--terra); font-weight:700;}
+    .meta{margin-bottom:11px; padding-bottom:7px;}
+    /* Column-fill flow: down column 1, then column 2, then the next page. */
+    .grid{display:block !important; column-count:2; column-gap:30px; column-fill:auto; grid-template-rows:none !important; grid-auto-flow:row !important;}
+    .station{break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid; padding:9px 0 11px; border-bottom:1px solid var(--navy-tint);}
+    .st-num{font-size:14px; min-width:90px;}
+    .ans .q{font-size:14px; min-width:30px;}
+    .ans .line{min-height:30px;} .answers{gap:11px; margin-top:7px;}
+    .st-region .line{min-height:18px;}
     .footer-sign{margin-top:10px; font-size:10px;}
     body.printing-cards #sheet{display:none !important;}
     body.printing-cards header .usage{display:none !important;}
@@ -164,6 +172,14 @@
           <option value="dry">Dry Lab (questions 1&ndash;26)</option>
         </select>
       </div>
+      <div class="field">
+        <label for="examName">Exam name</label>
+        <input type="text" id="examName" placeholder="e.g., Lab Exam 3" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="unit">Unit</label>
+        <input type="text" id="unit" placeholder="e.g., Skeletal System" autocomplete="off">
+      </div>
     </div>
     <div class="controls-actions">
       <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);">View:</span>
@@ -172,6 +188,7 @@
         <button type="button" id="btnStudent" aria-pressed="false">Student (blank)</button>
       </div>
       <button type="button" class="btn" id="btnPrint">Print student sheet</button>
+      <button type="button" class="btn" id="btnKey">Print answer key</button>
       <button type="button" class="btn" id="btnCards">Print cards</button>
       <button type="button" class="btn secondary" id="btnExport">Export CSV</button>
       <button type="button" class="btn secondary" id="btnClear">Clear this sheet</button>
@@ -185,17 +202,16 @@
       <div class="stat"><span class="num" id="sumTotal">0</span><span class="lbl" id="sumTotalLbl">tagged / 52</span></div>
       <div class="stat"><span class="num" id="sumID">0</span><span class="lbl">ID</span></div>
       <div class="stat"><span class="num" id="sumBeyond">0</span><span class="lbl">Beyond ID</span></div>
-      <div class="stat"><span class="num" id="sumTopics">0</span><span class="lbl">topics used</span></div>
+      <div class="stat"><span class="num" id="sumTopics">0</span><span class="lbl">systems used</span></div>
     </div>
     <div id="sumBars" class="bars" aria-live="polite"></div>
     <p class="sum-caption" id="sumCaption" aria-live="polite"></p>
   </section>
 
   <main id="sheet">
-    <span class="lab-band" id="labBand">Combined Practical</span>
+    <span class="lab-band" id="labBand">Combined Practical</span><span class="key-banner" id="keyBanner">Answer Key</span>
     <div class="meta">
       <div class="blk"><strong>Name</strong><div class="ruled">&nbsp;</div></div>
-      <div class="blk"><strong>Lab Exam #</strong><div class="ruled">&nbsp;</div></div>
     </div>
     <div class="grid" id="grid" aria-label="Stations"></div>
     <p class="footer-sign">Dr. Sharilyn Rennie</p>
@@ -210,35 +226,46 @@
 <script>
 (function(){
   "use strict";
-  var KEY="bio004_practical_sheet_v3";
+  var KEY="bio004_practical_sheet_v4";
   var MODES={
     combined:{label:"Combined Practical", stations:26},
     wet:{label:"Wet Lab", stations:13},
     dry:{label:"Dry Lab", stations:13}
   };
 
-  var SEED_STEMS=[
-    "ID this cell","ID this tissue","ID this region","ID this bone","ID this bone detail",
-    "ID this bone & bone detail","ID this muscle","Name this muscle","ID this organ","ID this structure",
-    "ID this vessel","ID this nerve","ID the structure the arrow indicates",
-    "Name one function","Name the function of this cell","Name this tissue",
-    "Name one location of this tissue","Name one function of this tissue",
-    "Name the origin of this muscle","Name the insertion of this muscle",
-    "Name the action of this muscle","Name the bone this articulates with"
-  ];
-  var SEED_TOPICS=[
-    "Upper extremity","Lower extremity","Axial skeleton","Head & neck","Thorax","Abdomen",
-    "Pelvis","Back","Cells & tissues (histology)","Nervous system","Cardiovascular","Surface anatomy"
-  ];
+  // Stems available in every system
+  var GENERAL_STEMS=["ID this structure","ID the structure the arrow indicates","Name one function"];
+  // Stems organized by system / unit
+  var STEMS_BY_SYSTEM={
+    "Cells & tissues (histology)":["ID this cell","ID this tissue","Name this tissue","Name one location of this tissue","Name one function of this tissue","Name the function of this cell"],
+    "Integumentary":["ID this structure","ID this tissue","Name one function of this structure"],
+    "Skeletal":["ID this bone","ID this bone detail","ID this bone & bone detail","Name the bone this articulates with"],
+    "Joints":["ID this joint","Name one movement at this joint"],
+    "Muscular":["ID this muscle","Name this muscle","Name the origin of this muscle","Name the insertion of this muscle","Name the action of this muscle"],
+    "Cardiovascular":["ID this vessel","ID this heart structure","Name one function of this structure"],
+    "Respiratory":["ID this structure","Name one function of this structure"],
+    "Lymphatic & immune":["ID this organ","ID this structure"],
+    "Blood":["ID this cell","Name one function of this cell"],
+    "Digestive":["ID this organ","ID this structure"],
+    "Urinary":["ID this organ","ID this structure"],
+    "Reproductive":["ID this organ","ID this structure"],
+    "Endocrine":["ID this gland","ID this structure"],
+    "Nervous (brain & cord)":["ID this structure","ID this nerve"],
+    "Peripheral & cranial nerves":["ID this nerve","Name one function"],
+    "Surface anatomy":["ID this region","ID this structure"]
+  };
+  var SEED_SYSTEMS=Object.keys(STEMS_BY_SYSTEM);
 
-  var state={ mode:"combined", customStems:[], customTopics:[],
+  var state={ mode:"combined", examName:"", unit:"", customSystems:[], customStemsBySystem:{},
     modes:{ combined:{sel:{},regions:{}}, wet:{sel:{},regions:{}}, dry:{sel:{},regions:{}} } };
   try{
     var saved=JSON.parse(localStorage.getItem(KEY)||"null");
     if(saved){
       state.mode=saved.mode||"combined";
-      state.customStems=saved.customStems||[];
-      state.customTopics=saved.customTopics||[];
+      state.examName=saved.examName||"";
+      state.unit=saved.unit||"";
+      state.customSystems=saved.customSystems||[];
+      state.customStemsBySystem=saved.customStemsBySystem||{};
       ["combined","wet","dry"].forEach(function(m){
         if(saved.modes&&saved.modes[m]) state.modes[m]={sel:saved.modes[m].sel||{},regions:saved.modes[m].regions||{}};
       });
@@ -246,10 +273,14 @@
   }catch(e){}
 
   function cur(){ return state.modes[state.mode]; }
-  function stemList(){ return SEED_STEMS.concat(state.customStems); }
-  function topicList(){ return SEED_TOPICS.concat(state.customTopics); }
+  function systemList(){ return SEED_SYSTEMS.concat(state.customSystems); }
+  function stemsFor(system){
+    var list=(STEMS_BY_SYSTEM[system]||[]).concat(state.customStemsBySystem[system]||[]);
+    GENERAL_STEMS.forEach(function(g){ if(list.indexOf(g)===-1) list.push(g); });
+    return list;
+  }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-  function slot(id){ var d=cur(); return d.sel[id]||(d.sel[id]={stem:"",topic:"",ans:""}); }
+  function slot(id){ var d=cur(); return d.sel[id]||(d.sel[id]={system:"",stem:"",ans:""}); }
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 
   function optionHtml(list,current){
@@ -257,13 +288,17 @@
     list.forEach(function(v){ html+='<option value="'+esc(v)+'"'+(v===current?' selected':'')+'>'+esc(v)+'</option>'; });
     html+='<option value="__add__">+ Add new&hellip;</option>'; return html;
   }
+  function stemOptionHtml(system,current){
+    if(!system){ return '<option value="">&mdash; pick a system first &mdash;</option>'; }
+    return optionHtml(stemsFor(system), current);
+  }
   function qBlock(i,n,qnum){
     var id=i+"-"+n, s=slot(id);
     return '<div class="qblock">'+
       '<span class="qlabel" aria-hidden="true">Question '+qnum+'</span>'+
       '<div class="qline">'+
-        '<select class="stemSel" data-stem="'+id+'" aria-label="Station '+i+' question '+qnum+' stem">'+optionHtml(stemList(),s.stem)+'</select>'+
-        '<select class="topicSel" data-topic="'+id+'" aria-label="Station '+i+' question '+qnum+' topic">'+optionHtml(topicList(),s.topic)+'</select>'+
+        '<select class="sysSel" data-system="'+id+'" aria-label="Station '+i+' question '+qnum+' system">'+optionHtml(systemList(),s.system)+'</select>'+
+        '<select class="stemSel" data-stem="'+id+'" aria-label="Station '+i+' question '+qnum+' stem">'+stemOptionHtml(s.system,s.stem)+'</select>'+
         '<input type="text" class="ansIn" data-ans="'+id+'" aria-label="Station '+i+' question '+qnum+' answer key" placeholder="answer key" value="'+esc(s.ans)+'">'+
       '</div>'+
     '</div>';
@@ -296,14 +331,16 @@
   }
 
   function refreshMenus(){
-    document.querySelectorAll("select[data-stem]").forEach(function(sel){ sel.innerHTML=optionHtml(stemList(),slot(sel.getAttribute("data-stem")).stem); });
-    document.querySelectorAll("select[data-topic]").forEach(function(sel){ sel.innerHTML=optionHtml(topicList(),slot(sel.getAttribute("data-topic")).topic); });
+    document.querySelectorAll("select[data-system]").forEach(function(sel){ sel.innerHTML=optionHtml(systemList(),slot(sel.getAttribute("data-system")).system); });
+    document.querySelectorAll("select[data-stem]").forEach(function(sel){ var sl=slot(sel.getAttribute("data-stem")); sel.innerHTML=stemOptionHtml(sl.system,sl.stem); });
   }
+  function repopStem(id){ var sel=document.querySelector('select[data-stem="'+id+'"]'); if(sel){ var sl=slot(id); sel.innerHTML=stemOptionHtml(sl.system,sl.stem); } }
 
   function reflect(){
     var M=MODES[state.mode], N=M.stations;
-    document.getElementById("subhead-display").textContent=M.label+" · questions 1–"+(N*2);
-    document.getElementById("labBand").textContent=M.label;
+    var ex=(state.examName||"").trim(), un=(state.unit||"").trim();
+    document.getElementById("subhead-display").textContent = ex ? (ex + (un ? " · "+un : "")) : (M.label+" · questions 1–"+(N*2));
+    document.getElementById("labBand").textContent = un ? (M.label+" · "+un) : M.label;
     document.getElementById("sumModeLbl").textContent=M.label;
     document.getElementById("sumTotalLbl").textContent="tagged / "+(N*2);
     var planning=document.body.classList.contains("mode-plan");
@@ -321,18 +358,18 @@
   function isID(stem){ return /^id\b/i.test((stem||"").trim()); }
   function computeSummary(){
     var N=MODES[state.mode].stations;
-    var total=0,id=0,beyond=0,noTopic=0,topics={};
+    var total=0,id=0,beyond=0,noSys=0,topics={};
     for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
-      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.topic)) continue;
+      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.system)) continue;
       total++; if(s.stem){ isID(s.stem)?id++:beyond++; } else beyond++;
-      if(s.topic){ var k=s.topic.toLowerCase(); if(!topics[k]) topics[k]={name:s.topic,count:0}; topics[k].count++; } else noTopic++;
+      if(s.system){ var k=s.system.toLowerCase(); if(!topics[k]) topics[k]={name:s.system,count:0}; topics[k].count++; } else noSys++;
     }
     document.getElementById("sumTotal").textContent=total;
     document.getElementById("sumID").textContent=id;
     document.getElementById("sumBeyond").textContent=beyond;
     document.getElementById("sumTopics").textContent=Object.keys(topics).length;
     var rows=Object.keys(topics).map(function(k){return topics[k];});
-    if(noTopic>0) rows.push({name:"(no topic yet)",count:noTopic,untagged:true});
+    if(noSys>0) rows.push({name:"(no system yet)",count:noSys,untagged:true});
     rows.sort(function(a,b){return b.count-a.count;});
     var max=rows.reduce(function(m,r){return Math.max(m,r.count);},0);
     var bars=document.getElementById("sumBars"); bars.innerHTML="";
@@ -344,14 +381,14 @@
       bars.appendChild(row);
     });
     var cap=document.getElementById("sumCaption");
-    if(total===0){ cap.textContent="Pick a question stem and topic for each slot to see the balance build here."; }
+    if(total===0){ cap.textContent="Pick a system and stem for each slot to see the balance build here."; }
     else{
       var parts=[id+" of "+total+" questions are ID, "+beyond+" beyond ID."];
       var tr=rows.filter(function(r){return !r.untagged;});
       if(tr.length){ var big=tr[0], avg=total/Math.max(tr.length,1);
-        if(big.count>=4&&big.count>=2*avg) parts.push('"'+big.name+'" is carrying '+big.count+' questions, well above the average of '+avg.toFixed(1)+' per topic. Consider redistributing.');
-        else parts.push("Spread looks reasonably even across "+tr.length+" topics."); }
-      if(noTopic>0) parts.push(noTopic+" tagged question"+(noTopic>1?"s":"")+" still need a topic.");
+        if(big.count>=4&&big.count>=2*avg) parts.push('"'+big.name+'" is carrying '+big.count+' questions, well above the average of '+avg.toFixed(1)+' per system. Consider redistributing.');
+        else parts.push("Spread looks reasonably even across "+tr.length+" systems."); }
+      if(noSys>0) parts.push(noSys+" tagged question"+(noSys>1?"s":"")+" still need a system.");
       cap.textContent=parts.join(" ");
     }
   }
@@ -359,17 +396,32 @@
   // events
   grid.addEventListener("change",function(e){
     var t=e.target;
-    if(t.matches("select[data-stem],select[data-topic]")){
-      var isStem=t.hasAttribute("data-stem"), id=t.getAttribute(isStem?"data-stem":"data-topic");
+    if(t.matches("select[data-system]")){
+      var id=t.getAttribute("data-system"), sl=slot(id);
       if(t.value==="__add__"){
-        var v=(window.prompt(isStem?"Add a new question stem:":"Add a new topic:")||"").trim();
-        if(v){ var arr=isStem?state.customStems:state.customTopics, all=isStem?stemList():topicList();
-          if(all.indexOf(v)===-1) arr.push(v);
-          slot(id)[isStem?"stem":"topic"]=v; save(); refreshMenus(); reflect();
-        } else { t.value=slot(id)[isStem?"stem":"topic"]; }
+        var v=(window.prompt("Add a new system / unit:")||"").trim();
+        if(v){ if(systemList().indexOf(v)===-1) state.customSystems.push(v); sl.system=v; sl.stem=""; save(); refreshMenus(); reflect(); }
+        else { t.value=sl.system; }
         return;
       }
-      slot(id)[isStem?"stem":"topic"]=t.value; save(); reflect();
+      sl.system=t.value;
+      if(sl.stem && stemsFor(sl.system).indexOf(sl.stem)===-1) sl.stem=""; // drop stem not in new system
+      save(); repopStem(id); reflect();
+      return;
+    }
+    if(t.matches("select[data-stem]")){
+      var sid=t.getAttribute("data-stem"), s2=slot(sid);
+      if(t.value==="__add__"){
+        if(!s2.system){ window.alert("Pick a system first, then add a stem to it."); t.value=s2.stem; return; }
+        var nv=(window.prompt('Add a new stem to "'+s2.system+'":')||"").trim();
+        if(nv){
+          if(!state.customStemsBySystem[s2.system]) state.customStemsBySystem[s2.system]=[];
+          if(stemsFor(s2.system).indexOf(nv)===-1) state.customStemsBySystem[s2.system].push(nv);
+          s2.stem=nv; save(); repopStem(sid); reflect();
+        } else { t.value=s2.stem; }
+        return;
+      }
+      s2.stem=t.value; save(); reflect();
     }
   });
   grid.addEventListener("input",function(e){
@@ -382,6 +434,10 @@
   var sheetMode=document.getElementById("sheetMode");
   sheetMode.value=state.mode;
   sheetMode.addEventListener("change",function(){ state.mode=this.value; save(); buildGrid(); reflect(); });
+  var examEl=document.getElementById("examName"), unitEl=document.getElementById("unit");
+  examEl.value=state.examName||""; unitEl.value=state.unit||"";
+  examEl.addEventListener("input",function(){ state.examName=this.value; save(); reflect(); });
+  unitEl.addEventListener("input",function(){ state.unit=this.value; save(); reflect(); });
 
   // view toggle
   var btnPlan=document.getElementById("btnPlan"), btnStudent=document.getElementById("btnStudent");
@@ -389,10 +445,22 @@
   btnPlan.addEventListener("click",function(){ setMode(true); });
   btnStudent.addEventListener("click",function(){ setMode(false); });
 
-  // printing
-  document.getElementById("btnPrint").addEventListener("click",function(){ document.body.classList.add("printing-student"); window.print(); });
+  // printing — fill answer lines for the KEY, force blank for the STUDENT sheet
+  function fillLines(showAnswers){
+    var N=MODES[state.mode].stations;
+    for(var i=1;i<=N;i++){
+      var disp=document.querySelector('.region-display[data-r="'+i+'"]');
+      if(disp){ disp.innerHTML=(showAnswers&&cur().regions[i])?esc(cur().regions[i]):"&nbsp;"; }
+      for(var n=1;n<=2;n++){
+        var s=slot(i+"-"+n), line=document.querySelector('.ansline[data-a="'+i+"-"+n+'"]');
+        if(line){ line.innerHTML=(showAnswers&&s.ans)?esc(s.ans):"&nbsp;"; }
+      }
+    }
+  }
+  document.getElementById("btnPrint").addEventListener("click",function(){ fillLines(false); document.body.classList.add("printing-student"); window.print(); });
+  document.getElementById("btnKey").addEventListener("click",function(){ fillLines(true); document.body.classList.add("printing-key"); window.print(); });
   document.getElementById("btnCards").addEventListener("click",function(){ buildCards(); document.body.classList.add("printing-cards"); window.print(); });
-  window.addEventListener("afterprint",function(){ document.body.classList.remove("printing-student","printing-cards"); });
+  window.addEventListener("afterprint",function(){ document.body.classList.remove("printing-student","printing-cards","printing-key"); reflect(); });
 
   function buildCards(){
     var host=document.getElementById("qcards"); host.innerHTML="";
@@ -403,7 +471,7 @@
       var qnum=(i-1)*2+n;
       var card=document.createElement("div"); card.className="qcard";
       card.innerHTML='<div class="qc-top"><span class="qc-station">'+lab+' &middot; Station '+i+' &middot; Q'+qnum+'</span>'+
-        (s.topic?'<span class="qc-topic">'+esc(s.topic)+'</span>':'')+'</div>'+
+        (s.system?'<span class="qc-topic">'+esc(s.system)+'</span>':'')+'</div>'+
         '<div class="qc-stem">'+esc(s.stem||"(question)")+'</div>'+
         (s.ans?'<div class="qc-key">Key: '+esc(s.ans)+'</div>':'');
       host.appendChild(card);
@@ -413,10 +481,10 @@
 
   document.getElementById("btnExport").addEventListener("click",function(){
     var N=MODES[state.mode].stations, lab=MODES[state.mode].label;
-    var rows=[["Lab","Station","Question","Topic","Stem","Answer","Type"]];
+    var rows=[["Lab","Station","Question","System","Stem","Answer","Type"]];
     for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
-      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.topic)) continue;
-      rows.push([lab,i,(i-1)*2+n,s.topic||"",s.stem||"",s.ans||"",s.stem?(isID(s.stem)?"ID":"Beyond ID"):""]);
+      var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.system)) continue;
+      rows.push([lab,i,(i-1)*2+n,s.system||"",s.stem||"",s.ans||"",s.stem?(isID(s.stem)?"ID":"Beyond ID"):""]);
     }
     var csv=rows.map(function(r){ return r.map(function(c){ c=String(c); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(","); }).join("\r\n");
     var fn=lab.replace(/[^a-z0-9]+/gi,"-").toLowerCase();
