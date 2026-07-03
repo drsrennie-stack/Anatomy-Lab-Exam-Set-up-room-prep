@@ -101,6 +101,29 @@
   .region-input-wrap input{font-family:inherit; font-size:12px; border:1px solid var(--navy); border-radius:5px; padding:4px 7px; width:100%; color:var(--navy); background:var(--white);}
 
   .footer-sign{margin-top:22px; font-weight:500; font-size:13px; color:var(--navy);}
+  /* Bonus */
+  .bonus-toggle{display:flex; align-items:center; gap:8px; margin-top:12px; font-size:13px; font-weight:600; color:var(--navy);}
+  .bonus-toggle input{width:16px; height:16px; accent-color:var(--terra);}
+  .bonusrow{margin-top:6px; display:flex; flex-direction:column; gap:6px;}
+  .bchk{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--gold);}
+  .bchk input{width:14px; height:14px; accent-color:var(--gold);}
+  .bfields{display:flex; gap:6px;}
+  .bfields input{font-family:inherit; font-size:12px; color:var(--navy); border:1px solid var(--gold); border-radius:5px; padding:5px 7px; flex:1; min-width:0; background:var(--white);}
+  .bonus-editor{display:none; background:var(--white); border:1px solid var(--navy-tint); border-radius:10px; padding:16px 18px; margin:0 0 22px; box-shadow:var(--rest-shadow);}
+  .bonus-editor h2{font-weight:600; color:var(--terra); font-size:16px; margin:0 0 6px;}
+  .be-hint{font-size:13px; color:#6B7180; margin:0 0 12px;}
+  .eb-row{display:flex; gap:8px; margin-bottom:8px;}
+  .eb-row input{font-family:inherit; font-size:13px; color:var(--navy); border:1px solid var(--navy); border-radius:6px; padding:7px 9px;}
+  .eb-row .eb-stem{flex:1.4 1 0; min-width:0;} .eb-row .eb-ans{flex:1 1 0; min-width:0;}
+  .eb-del{font-size:12px; padding:6px 12px;}
+  #bonusArea{margin-top:16px; break-inside:avoid;}
+  .bonus-band{background:var(--gold) !important; color:#060A18 !important;}
+  .scard.bonus{border-color:var(--gold);}
+  .scard .seye.gold{color:var(--gold); letter-spacing:4px;}
+  .scard .bignum.gold{color:var(--gold);}
+  .scard .spill.gold{background:var(--gold); color:#0B1530;}
+  .qrow.cb, .qrow.cb b{color:var(--gold);}
+  .cbonus{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); border:1px solid var(--gold); border-radius:10px; padding:1px 7px; margin-left:6px;}
 
   #cardArea{display:none;}
   .card-title{display:none;}
@@ -111,6 +134,22 @@
   .qc-topic{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); border:1px solid var(--terra-dark); border-radius:10px; padding:2px 8px; white-space:nowrap;}
   .qc-stem{font-weight:700; font-size:16px; color:var(--navy); line-height:1.25;}
   .qc-key{font-weight:600; font-size:12px; color:var(--terra-dark); margin-top:auto; border-top:1px dashed var(--navy-tint); padding-top:6px;}
+
+  /* Half-sheet station placards (screen-hidden; shown only when printing cards) */
+  .scards{display:flex; flex-direction:column; gap:0.2in;}
+  .scard{border:2.5px solid var(--navy); border-radius:16px; padding:0.3in 0.4in; display:flex; flex-direction:column; break-inside:avoid; page-break-inside:avoid; height:4.8in;}
+  .scard .sbrand{display:flex; align-items:center; gap:9px;}
+  .scard .sbrand svg{height:30px; width:auto;}
+  .scard .sbrand .nm{font-size:15px; font-weight:800; color:var(--navy);} .scard .sbrand .nm .a{color:var(--terra);}
+  .scard .sbrand .sub{font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--navy); opacity:.7;}
+  .scard .sbody{flex:1; display:grid; grid-template-columns:auto 1fr; gap:30px; align-items:center;}
+  .scard .seye{font-size:20px; font-weight:800; letter-spacing:7px; color:var(--terra);}
+  .scard .bignum{font-size:215px; font-weight:800; color:var(--navy); line-height:0.86;}
+  .scard .spill{display:inline-block; font-size:15px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#fff; background:var(--terra); border-radius:18px; padding:5px 14px; margin-bottom:8px;}
+  .scard .qnums{font-size:22px; font-weight:800; color:var(--navy); margin:0 0 4px; border-bottom:1px solid var(--navy-tint); padding-bottom:6px;}
+  .scard .qrow{font-size:25px; font-weight:700; color:var(--navy); margin-top:9px;}
+  .scard .qrow b{color:var(--terra);}
+  .scard .sfoot{font-size:13px; font-weight:600; color:var(--navy); opacity:.7; margin-top:10px;}
 
   @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
   @media (max-width:640px){ .grid{grid-template-columns:1fr; grid-template-rows:none !important; grid-auto-flow:row;} }
@@ -138,10 +177,8 @@
     .st-region .line{min-height:18px;}
     .footer-sign{margin-top:10px; font-size:10px;}
     body.printing-cards #sheet{display:none !important;}
-    body.printing-cards header .usage{display:none !important;}
+    body.printing-cards header{display:none !important;}
     body.printing-cards #cardArea{display:block !important;}
-    body.printing-cards .card-title{display:block; font-weight:800; font-size:16px; color:var(--navy); margin:0 0 12px;}
-    body.printing-cards .qcards{gap:10px;}
   }
 </style>
 </head>
@@ -181,6 +218,7 @@
         <input type="text" id="unit" placeholder="e.g., Skeletal System" autocomplete="off">
       </div>
     </div>
+    <label class="bonus-toggle"><input type="checkbox" id="bonusOn"><span>Include a bonus section (numbers B1, B2&hellip; at the end)</span></label>
     <div class="controls-actions">
       <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);">View:</span>
       <div class="toggle" role="group" aria-label="Switch view">
@@ -189,7 +227,7 @@
       </div>
       <button type="button" class="btn" id="btnPrint">Print student sheet</button>
       <button type="button" class="btn" id="btnKey">Print answer key</button>
-      <button type="button" class="btn" id="btnCards">Print cards</button>
+      <button type="button" class="btn" id="btnCards">Print station cards</button>
       <button type="button" class="btn secondary" id="btnExport">Export CSV</button>
       <button type="button" class="btn secondary" id="btnClear">Clear this sheet</button>
       <span class="save-note" id="saveNote" aria-live="polite">Each sheet (Combined, Wet, Dry) saves separately on this computer.</span>
@@ -208,18 +246,25 @@
     <p class="sum-caption" id="sumCaption" aria-live="polite"></p>
   </section>
 
+  <section class="bonus-editor no-print" id="bonusEditor" aria-label="Bonus questions">
+    <h2>Bonus questions</h2>
+    <p class="be-hint">Check &ldquo;Bonus&rdquo; on any question above to attach one, and/or add standalone bonuses here. All are numbered B1, B2&hellip; and printed at the end of the exam.</p>
+    <div id="endBonusList"></div>
+    <button type="button" class="btn secondary" id="addEndBonus">+ Add end bonus</button>
+  </section>
+
   <main id="sheet">
     <span class="lab-band" id="labBand">Combined Practical</span><span class="key-banner" id="keyBanner">Answer Key</span>
     <div class="meta">
       <div class="blk"><strong>Name</strong><div class="ruled">&nbsp;</div></div>
     </div>
     <div class="grid" id="grid" aria-label="Stations"></div>
+    <section id="bonusArea" aria-label="Bonus questions"></section>
     <p class="footer-sign">Dr. Sharilyn Rennie</p>
   </main>
 
   <section id="cardArea" aria-hidden="true">
-    <p class="card-title" id="cardTitle">Station Question Cards</p>
-    <div class="qcards" id="qcards"></div>
+    <div class="scards" id="scards"></div>
   </section>
 </div>
 
@@ -256,18 +301,19 @@
   };
   var SEED_SYSTEMS=Object.keys(STEMS_BY_SYSTEM);
 
-  var state={ mode:"combined", examName:"", unit:"", customSystems:[], customStemsBySystem:{},
-    modes:{ combined:{sel:{},regions:{}}, wet:{sel:{},regions:{}}, dry:{sel:{},regions:{}} } };
+  var state={ mode:"combined", examName:"", unit:"", bonusOn:false, customSystems:[], customStemsBySystem:{},
+    modes:{ combined:{sel:{},regions:{},endBonuses:[]}, wet:{sel:{},regions:{},endBonuses:[]}, dry:{sel:{},regions:{},endBonuses:[]} } };
   try{
     var saved=JSON.parse(localStorage.getItem(KEY)||"null");
     if(saved){
       state.mode=saved.mode||"combined";
       state.examName=saved.examName||"";
       state.unit=saved.unit||"";
+      state.bonusOn=!!saved.bonusOn;
       state.customSystems=saved.customSystems||[];
       state.customStemsBySystem=saved.customStemsBySystem||{};
       ["combined","wet","dry"].forEach(function(m){
-        if(saved.modes&&saved.modes[m]) state.modes[m]={sel:saved.modes[m].sel||{},regions:saved.modes[m].regions||{}};
+        if(saved.modes&&saved.modes[m]) state.modes[m]={sel:saved.modes[m].sel||{},regions:saved.modes[m].regions||{},endBonuses:saved.modes[m].endBonuses||[]};
       });
     }
   }catch(e){}
@@ -280,7 +326,7 @@
     return list;
   }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-  function slot(id){ var d=cur(); return d.sel[id]||(d.sel[id]={system:"",stem:"",ans:""}); }
+  function slot(id){ var d=cur(); return d.sel[id]||(d.sel[id]={system:"",stem:"",ans:"",bonus:false,bstem:"",bans:""}); }
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 
   function optionHtml(list,current){
@@ -300,6 +346,13 @@
         '<select class="sysSel" data-system="'+id+'" aria-label="Station '+i+' question '+qnum+' system">'+optionHtml(systemList(),s.system)+'</select>'+
         '<select class="stemSel" data-stem="'+id+'" aria-label="Station '+i+' question '+qnum+' stem">'+stemOptionHtml(s.system,s.stem)+'</select>'+
         '<input type="text" class="ansIn" data-ans="'+id+'" aria-label="Station '+i+' question '+qnum+' answer key" placeholder="answer key" value="'+esc(s.ans)+'">'+
+      '</div>'+
+      '<div class="bonusrow">'+
+        '<label class="bchk"><input type="checkbox" data-bonus="'+id+'"'+(s.bonus?' checked':'')+'> Bonus</label>'+
+        '<div class="bfields" style="display:'+(s.bonus?'flex':'none')+'">'+
+          '<input type="text" class="bstemIn" data-bstem="'+id+'" placeholder="bonus question" value="'+esc(s.bstem||"")+'">'+
+          '<input type="text" class="bansIn" data-bans="'+id+'" placeholder="bonus answer" value="'+esc(s.bans||"")+'">'+
+        '</div>'+
       '</div>'+
     '</div>';
   }
@@ -353,6 +406,35 @@
       }
     }
     computeSummary();
+    renderBonus(planning?'plan':'student');
+  }
+
+  function bonusList(){
+    var N=MODES[state.mode].stations, out=[], k=1, i, n;
+    for(i=1;i<=N;i++) for(n=1;n<=2;n++){ var s=slot(i+"-"+n); if(s.bonus){ out.push({label:"B"+k, key:i+"-"+n, stem:s.bstem||"", ans:s.bans||"", src:"Station "+i+" · Q"+((i-1)*2+n)}); k++; } }
+    (cur().endBonuses||[]).forEach(function(b){ out.push({label:"B"+k, key:null, stem:b.stem||"", ans:b.ans||"", src:"End bonus"}); k++; });
+    return out;
+  }
+  function renderBonus(view){
+    var host=document.getElementById("bonusArea"); if(!host) return;
+    if(!state.bonusOn){ host.style.display="none"; host.innerHTML=""; return; }
+    var list=bonusList();
+    if(!list.length){ host.style.display="none"; host.innerHTML=""; return; }
+    host.style.display="";
+    var showAns=(view==='plan'||view==='key');
+    var rows=list.map(function(b){
+      return '<div class="ans"><span class="q">'+b.label+'.</span><span class="line ansline">'+((showAns&&b.ans)?esc(b.ans):"&nbsp;")+'</span></div>';
+    }).join("");
+    host.innerHTML='<span class="lab-band bonus-band">Bonus</span><div class="answers bonus-answers">'+rows+'</div>';
+  }
+  function renderEndBonusEditor(){
+    var chk=document.getElementById("bonusOn"); if(chk) chk.checked=state.bonusOn;
+    var ed=document.getElementById("bonusEditor"); if(ed) ed.style.display=state.bonusOn?"":"none";
+    var host=document.getElementById("endBonusList"); if(!host) return;
+    var eb=cur().endBonuses||[];
+    host.innerHTML=eb.map(function(b,idx){
+      return '<div class="eb-row"><input type="text" class="eb-stem" data-eb="'+idx+'" placeholder="bonus question" value="'+esc(b.stem||"")+'"><input type="text" class="eb-ans" data-eba="'+idx+'" placeholder="bonus answer" value="'+esc(b.ans||"")+'"><button type="button" class="btn secondary eb-del" data-ebd="'+idx+'">Remove</button></div>';
+    }).join("");
   }
 
   function isID(stem){ return /^id\b/i.test((stem||"").trim()); }
@@ -396,6 +478,7 @@
   // events
   grid.addEventListener("change",function(e){
     var t=e.target;
+    if(t.matches("input[data-bonus]")){ var bid=t.getAttribute("data-bonus"); slot(bid).bonus=t.checked; var bf=t.closest(".bonusrow").querySelector(".bfields"); if(bf) bf.style.display=t.checked?"flex":"none"; save(); reflect(); return; }
     if(t.matches("select[data-system]")){
       var id=t.getAttribute("data-system"), sl=slot(id);
       if(t.value==="__add__"){
@@ -428,7 +511,14 @@
     var t=e.target;
     if(t.matches("input[data-ans]")){ slot(t.getAttribute("data-ans")).ans=t.value; save(); reflect(); }
     else if(t.matches("input[data-region]")){ cur().regions[t.getAttribute("data-region")]=t.value; save(); reflect(); }
+    else if(t.matches("input[data-bstem]")){ slot(t.getAttribute("data-bstem")).bstem=t.value; save(); reflect(); }
+    else if(t.matches("input[data-bans]")){ slot(t.getAttribute("data-bans")).bans=t.value; save(); reflect(); }
   });
+  // bonus controls
+  document.getElementById("bonusOn").addEventListener("change",function(){ state.bonusOn=this.checked; save(); renderEndBonusEditor(); reflect(); });
+  document.getElementById("addEndBonus").addEventListener("click",function(){ cur().endBonuses.push({stem:"",ans:""}); save(); renderEndBonusEditor(); reflect(); });
+  document.getElementById("endBonusList").addEventListener("input",function(e){ var t=e.target; if(t.matches(".eb-stem")){ cur().endBonuses[+t.getAttribute("data-eb")].stem=t.value; save(); reflect(); } else if(t.matches(".eb-ans")){ cur().endBonuses[+t.getAttribute("data-eba")].ans=t.value; save(); reflect(); } });
+  document.getElementById("endBonusList").addEventListener("click",function(e){ var t=e.target; if(t.matches(".eb-del")){ cur().endBonuses.splice(+t.getAttribute("data-ebd"),1); save(); renderEndBonusEditor(); reflect(); } });
 
   // sheet mode
   var sheetMode=document.getElementById("sheetMode");
@@ -456,27 +546,57 @@
         if(line){ line.innerHTML=(showAnswers&&s.ans)?esc(s.ans):"&nbsp;"; }
       }
     }
+    renderBonus(showAnswers?'key':'student');
   }
   document.getElementById("btnPrint").addEventListener("click",function(){ fillLines(false); document.body.classList.add("printing-student"); window.print(); });
   document.getElementById("btnKey").addEventListener("click",function(){ fillLines(true); document.body.classList.add("printing-key"); window.print(); });
   document.getElementById("btnCards").addEventListener("click",function(){ buildCards(); document.body.classList.add("printing-cards"); window.print(); });
   window.addEventListener("afterprint",function(){ document.body.classList.remove("printing-student","printing-cards","printing-key"); reflect(); });
 
+  var LOGO_SVG='<svg viewBox="40 10 125 148" role="img" aria-hidden="true" focusable="false"><g transform="translate(0,18)"><g transform="translate(60,0) rotate(8 0 130)"><circle cx="0" cy="20" r="10" fill="#0B1530"/><path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#0B1530"/></g><g transform="translate(100,0)"><circle cx="0" cy="10" r="11" fill="#8B3A2E"/><path d="M 0,22 C -11,22 -17,26 -17,34 C -17,52 -14,70 -12,86 C -11,108 -13,122 -15,132 L 15,132 C 13,122 11,108 12,86 C 14,70 17,52 17,34 C 17,26 11,22 0,22 Z" fill="#8B3A2E"/></g><g transform="translate(140,0) rotate(-8 0 130)"><circle cx="0" cy="20" r="10" fill="#C9A14A"/><path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#C9A14A"/></g></g></svg>';
   function buildCards(){
-    var host=document.getElementById("qcards"); host.innerHTML="";
-    var N=MODES[state.mode].stations, lab=MODES[state.mode].label;
-    document.getElementById("cardTitle").textContent=lab+" — Station Cards";
-    for(var i=1;i<=N;i++) for(var n=1;n<=2;n++){
-      var s=slot(i+"-"+n); if(!(s.stem||s.ans)) continue;
-      var qnum=(i-1)*2+n;
-      var card=document.createElement("div"); card.className="qcard";
-      card.innerHTML='<div class="qc-top"><span class="qc-station">'+lab+' &middot; Station '+i+' &middot; Q'+qnum+'</span>'+
-        (s.system?'<span class="qc-topic">'+esc(s.system)+'</span>':'')+'</div>'+
-        '<div class="qc-stem">'+esc(s.stem||"(question)")+'</div>'+
-        (s.ans?'<div class="qc-key">Key: '+esc(s.ans)+'</div>':'');
+    var host=document.getElementById("scards"); host.innerHTML="";
+    var N=MODES[state.mode].stations;
+    var battach={}, bnum=1, bi, bn;
+    if(state.bonusOn){ for(bi=1;bi<=N;bi++) for(bn=1;bn<=2;bn++){ if(slot(bi+"-"+bn).bonus){ battach[bi+"-"+bn]="B"+bnum; bnum++; } } }
+    for(var i=1;i<=N;i++){
+      var a=slot(i+"-1"), b=slot(i+"-2");
+      if(!(a.stem||a.ans||a.system||b.stem||b.ans||b.system)) continue; // skip empty stations
+      var q1=(i-1)*2+1, q2=(i-1)*2+2, sa=a.system||"", sb=b.system||"";
+      var pill = (sa && (sa===sb || !sb)) ? sa : (sb && !sa ? sb : "");
+      function line(qn,s,sys){
+        var tag=(sys && !pill) ? ' <span style="font-size:14px;opacity:.65">('+esc(sys)+')</span>' : '';
+        return '<div class="qrow"><b>'+qn+'.</b> '+(s.stem?esc(s.stem):"____")+tag+'</div>';
+      }
+      var bonusHtml="";
+      if(state.bonusOn){
+        if(a.bonus) bonusHtml+='<div class="qrow cb"><b>'+battach[i+"-1"]+'.</b> '+esc(a.bstem||"____")+' <span class="cbonus">Bonus</span></div>';
+        if(b.bonus) bonusHtml+='<div class="qrow cb"><b>'+battach[i+"-2"]+'.</b> '+esc(b.bstem||"____")+' <span class="cbonus">Bonus</span></div>';
+      }
+      var card=document.createElement("section"); card.className="scard";
+      card.innerHTML=
+        '<div class="sbrand">'+LOGO_SVG+'<span class="nm">Human <span class="a">Anatomy</span></span><span class="sub">BIO 004 &middot; Solano</span></div>'+
+        '<div class="sbody">'+
+          '<div class="sleft"><div class="seye">STATION</div><div class="bignum">'+i+'</div></div>'+
+          '<div class="sright">'+(pill?'<span class="spill">'+esc(pill)+'</span>':'')+
+            '<div class="qnums">Questions '+q1+' &amp; '+q2+'</div>'+line(q1,a,sa)+line(q2,b,sb)+bonusHtml+'</div>'+
+        '</div>'+
+        '<div class="sfoot">Record your answers on your lab practical answer sheet.</div>';
       host.appendChild(card);
     }
-    if(!host.children.length) host.innerHTML='<div class="qcard"><div class="qc-stem">No questions entered yet.</div></div>';
+    if(state.bonusOn){
+      (cur().endBonuses||[]).forEach(function(eb){
+        if(!(eb.stem||eb.ans)) return;
+        var label="B"+bnum; bnum++;
+        var card=document.createElement("section"); card.className="scard bonus";
+        card.innerHTML='<div class="sbrand">'+LOGO_SVG+'<span class="nm">Human <span class="a">Anatomy</span></span><span class="sub">BIO 004 &middot; Solano</span></div>'+
+          '<div class="sbody"><div class="sleft"><div class="seye gold">BONUS</div><div class="bignum gold">'+label+'</div></div>'+
+          '<div class="sright"><span class="spill gold">Bonus</span><div class="qnums">Bonus '+label+'</div><div class="qrow">'+esc(eb.stem||"____")+'</div></div></div>'+
+          '<div class="sfoot">Record your answers on your lab practical answer sheet.</div>';
+        host.appendChild(card);
+      });
+    }
+    if(!host.children.length){ host.innerHTML='<section class="scard"><div class="sbody"><div class="sleft"><div class="bignum">&mdash;</div></div><div class="sright"><div class="qnums">No questions entered yet.</div></div></div></section>'; }
   }
 
   document.getElementById("btnExport").addEventListener("click",function(){
@@ -486,6 +606,7 @@
       var s=slot(i+"-"+n); if(!(s.stem||s.ans||s.system)) continue;
       rows.push([lab,i,(i-1)*2+n,s.system||"",s.stem||"",s.ans||"",s.stem?(isID(s.stem)?"ID":"Beyond ID"):""]);
     }
+    if(state.bonusOn){ bonusList().forEach(function(b){ rows.push([lab,b.src,b.label,"",b.stem||"",b.ans||"","Bonus"]); }); }
     var csv=rows.map(function(r){ return r.map(function(c){ c=String(c); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(","); }).join("\r\n");
     var fn=lab.replace(/[^a-z0-9]+/gi,"-").toLowerCase();
     var blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
@@ -497,11 +618,12 @@
   document.getElementById("btnClear").addEventListener("click",function(){
     var lab=MODES[state.mode].label;
     if(!window.confirm("Clear all saved questions and notes for "+lab+"? Other sheets and your added menu items stay.")) return;
-    state.modes[state.mode]={sel:{},regions:{}}; save(); buildGrid(); reflect();
+    state.modes[state.mode]={sel:{},regions:{},endBonuses:[]}; save(); buildGrid(); renderEndBonusEditor(); reflect();
     document.getElementById("saveNote").textContent="Cleared "+lab+". Notes save again as you type.";
   });
 
   buildGrid();
+  renderEndBonusEditor();
   reflect();
 })();
 </script>
