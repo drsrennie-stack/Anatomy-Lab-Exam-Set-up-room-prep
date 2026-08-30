@@ -6,7 +6,7 @@
 <title>Station Card Generator &middot; BIO 004</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0B1530;--navy-deep:#060A18;--terra:#8B3A2E;--tint:#EAECEF;--navy-15:rgba(11,21,48,.15);--muted:#4F576A;--line:#6D7383;--display:'Open Sans','Plus Jakarta Sans',system-ui,sans-serif;}
+:root{--navy:#0B1530;--navy-deep:#060A18;--terra:#8B3A2E;--tint:#EAECEF;--navy-15:rgba(11,21,48,.15);--rule-soft:rgba(11,21,48,.32);--muted:#4F576A;--line:#6D7383;--display:'Open Sans','Plus Jakarta Sans',system-ui,sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--navy);background:#FFF;-webkit-font-smoothing:antialiased;line-height:1.5;}
 a{color:inherit;}
@@ -51,11 +51,10 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,Menlo,monospace;fo
 .scard.bonus .bignum{color:var(--terra);}
 .spill{display:inline-block;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:var(--terra);border-radius:3px;padding:5px 14px;margin-bottom:8px;}
 .spill.bonus{background:var(--navy);color:#fff;}
-.qnums{font-size:22px;font-weight:800;color:var(--navy);margin:0 0 4px;border-bottom:1px solid var(--tint);padding-bottom:6px;}
+.qnums{font-size:22px;font-weight:800;color:var(--navy);margin:0 0 4px;border-bottom:1px solid var(--rule-soft);padding-bottom:6px;}
 .qrow{font-size:25px;font-weight:700;color:var(--navy);margin-top:9px;line-height:1.25;}
 .qrow b{color:var(--terra);}
 .scard.bonus .qrow b{color:var(--terra);}
-.systag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--terra);border:1px solid var(--terra);border-radius:3px;padding:1px 8px;margin-left:4px;vertical-align:middle;}
 .sfoot{font-size:13px;font-weight:600;color:var(--muted);margin-top:10px;}
 #out{margin-top:10px;}
 @media print{ .no-print{display:none !important;} .wrap{max-width:none;padding:0;} @page{size:Letter portrait;margin:0.4in 0.45in;} }
@@ -85,7 +84,7 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,Menlo,monospace;fo
         <button type="button" class="btn secondary" id="print" disabled>Print / Save as PDF</button>
         <span class="msg" id="msg"></span>
       </div>
-      <p class="hint">A station&rsquo;s two questions share a card. A row whose <code>System</code> is <code>BONUS</code>, or whose <code>Type</code> is <code>Bonus</code>, prints as a bonus card: terra border, terra numeral, and it sorts to the end. Cards show prompts only, student facing, never the answer key.</p>
+      <p class="hint">A station&rsquo;s two questions share a card. A row whose <code>System</code> is <code>BONUS</code>, or whose <code>Type</code> is <code>Bonus</code>, prints as a bonus card: terra border, terra numeral, and it sorts to the end. Cards carry the station number and the prompts only. The system is never printed, because naming it would give the answer away, and neither is the answer key.</p>
     </div>
   </div>
 
@@ -146,16 +145,16 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,Menlo,monospace;fo
       var s1=(q1.system||""), s2=q2?(q2.system||""):"";
       function bonusRow(q){ return q && ((q.system||"").trim().toUpperCase()==="BONUS" || (q.type||"").trim().toUpperCase()==="BONUS"); }
       var isBonus=bonusRow(q1)||bonusRow(q2);
-      var same=(q2 && s1.trim()===s2.trim());
-      function sd(x){ return x.trim().toUpperCase()==="BONUS"?"":x; }
-      var pill=(same&&!isBonus&&sd(s1))?('<span class="spill">'+esc(sd(s1))+'</span>'):'';
-      function line(q,sys,showtag){ var tag=(showtag&&sd(sys))?(' <span class="systag">'+esc(sd(sys))+'</span>'):''; return '<div class="qrow"><b>'+esc(q.question)+'.</b> '+esc(q.stem)+tag+'</div>'; }
-      var rh=line(q1,s1,!same&&!isBonus)+(q2?line(q2,s2,!same&&!isBonus):'');
+      // The system column is read only to spot a bonus row. It is never printed:
+      // naming the system beside the prompt hands the student half the answer,
+      // histology worst of all.
+      function line(q){ return '<div class="qrow"><b>'+esc(q.question)+'.</b> '+esc(q.stem)+'</div>'; }
+      var rh=line(q1)+(q2?line(q2):'');
       var qn=isBonus ? ("Bonus "+esc(q1.question))
                      : ("Questions "+esc(q1.question)+(q2?(" &amp; "+esc(q2.question)):""));
       var cls=isBonus?"scard bonus":"scard";
       var eye=isBonus?'<div class="seye bonus">BONUS</div>':'<div class="seye">STATION</div>';
-      var bp=isBonus?'<span class="spill bonus">Bonus</span>':pill;
+      var bp=isBonus?'<span class="spill bonus">Bonus</span>':'';
       cards.push('<section class="'+cls+'"><div class="sbrand">'+LOGO+'<span class="nm">Human <span class="a">Anatomy</span></span><span class="sub">BIO 004 &middot; Solano</span></div><div class="sbody"><div class="sleft">'+eye+'<div class="bignum">'+esc(s)+'</div></div><div class="sright">'+bp+'<div class="qnums">'+qn+'</div>'+rh+'</div></div><div class="sfoot">Record your answers on your lab practical answer sheet.</div></section>');
     });
     $("cards").innerHTML=cards.join("");

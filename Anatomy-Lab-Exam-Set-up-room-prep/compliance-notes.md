@@ -20,6 +20,8 @@ Sheet mode setting:
 
 Each mode stores its data separately, prints its lab name in a terra band, and feeds card printing and CSV export for its own questions. Stations run down column 1, then down column 2.
 
+The system a question belongs to (Skeletal, Cells and tissues, and so on) is planner data only. It is never printed on a station card or anywhere student facing, because naming the system beside the prompt gives away a large part of the answer. Histology is the clearest case: a card reading "ID this tissue" under a chip saying "Epithelium histology" has answered half its own question. The same rule is enforced in the Station Card Generator, which reads the System column only to spot a bonus row.
+
 An optional bonus section numbers attached and standalone bonus questions B1, B2 and so on, and prints them across the foot of the sheet.
 
 Outputs: one-page student sheet, one-page answer key on the identical grid, half-sheet station cards, and CSV export.
@@ -47,6 +49,7 @@ Chimes: five synthesized options (Songbird trill, Morning birds, Wind chimes, Wa
 | De-emphasized text (hints, card footers, brand subline) | Ink-muted #4F576A | White | 7.2:1 | AAA |
 | Focus ring | Terra #8B3A2E | White or any panel | 7.7:1 | Pass (1.4.11) |
 | Panel hairline border | Navy-15 rgba(11,21,48,.15) | White | decorative only | n/a |
+| Soft rule (region cue line, card divider) | Rule-soft rgba(11,21,48,.32) | White | decorative only | n/a |
 
 Notes: gold is retired from this toolkit. The Answer Key banner and the Bonus band, which were gold, are now navy with white text, which keeps them distinct from the terra lab-name band. On the printed station cards the bonus placard inverts the regular one, terra border and terra numeral against a navy eyebrow and navy pill, so bonus reads apart without a third color. Terra #8B3A2E at 7.66:1 clears AAA with little headroom and must never be tinted lighter for text. The 0.5px navy-15 hairline is decorative framing only; no information is carried by it alone.
 
@@ -69,6 +72,8 @@ Writing-line heights: 18px (about 4.8mm) on the combined practical, which is the
 Station cards print two half-sheets per page, 13 pages for a 26-station practical.
 
 Planner fields and the balance panel are hidden in print. The lab name and the "Note" cue label are forced on for the student print.
+
+No rule anywhere in the toolkit is dotted or dashed. The region cue line on the student sheet, which used to be a dotted navy underline, is a solid 1px rule at rule-soft rgba(11,21,48,.32), light enough to read as a cue rather than a writing line but unbroken. The one remaining dashed border is the file drop zone in the Station Card Generator, where dashes are the standard signal for "drop a file here" and nothing is being written on.
 
 ## 6. Student privacy
 

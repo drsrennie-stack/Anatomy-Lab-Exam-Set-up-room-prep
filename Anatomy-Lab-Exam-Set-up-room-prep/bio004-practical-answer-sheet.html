@@ -10,7 +10,7 @@
 <style>
   :root{
     --navy:#0B1530; --navy-deep:#060A18; --navy-tint:#EAECEF;
-    --navy-15:rgba(11,21,48,.15); --ink-muted:#4F576A;
+    --navy-15:rgba(11,21,48,.15); --ink-muted:#4F576A; --rule-soft:rgba(11,21,48,.32);
     --terra:#8B3A2E; --terra-dark:#8B3A2E;
     --white:#FFFFFF; --offwhite:#FFFFFF;
     --display:'Open Sans','Plus Jakarta Sans',system-ui,sans-serif;
@@ -82,7 +82,7 @@
   .st-region .lab{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); font-weight:700; white-space:nowrap;}
   .lab-plan{display:none;} .lab-student{display:inline;}
   body.mode-plan .lab-plan{display:inline;} body.mode-plan .lab-student{display:none;}
-  .st-region .line{flex:1; border-bottom:1px dotted var(--navy); min-height:16px; font-size:14px; color:var(--navy); padding-left:2px;}
+  .st-region .line{flex:1; border-bottom:1px solid var(--rule-soft); min-height:16px; font-size:14px; color:var(--navy); padding-left:2px;}
   .answers{display:flex; flex-direction:column; gap:7px; margin-top:5px;}
   .ans{display:flex; align-items:baseline; gap:8px;}
   .ans .q{font-size:16px; font-weight:700; color:var(--terra-dark); min-width:30px;}
@@ -134,7 +134,7 @@
   .qc-station{font-weight:800; font-size:14px; color:var(--navy);}
   .qc-topic{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--terra-dark); border:1px solid var(--terra-dark); border-radius:3px; padding:2px 8px; white-space:nowrap;}
   .qc-stem{font-weight:700; font-size:16px; color:var(--navy); line-height:1.25;}
-  .qc-key{font-weight:600; font-size:12px; color:var(--terra-dark); margin-top:auto; border-top:1px dashed var(--navy-tint); padding-top:6px;}
+  .qc-key{font-weight:600; font-size:12px; color:var(--terra-dark); margin-top:auto; border-top:1px solid var(--rule-soft); padding-top:6px;}
 
   /* Half-sheet station placards (screen-hidden; shown only when printing cards) */
   .scards{display:flex; flex-direction:column; gap:0.2in;}
@@ -649,11 +649,12 @@
     for(var i=1;i<=N;i++){
       var a=slot(i+"-1"), b=slot(i+"-2");
       if(!(a.stem||a.ans||a.system||b.stem||b.ans||b.system)) continue; // skip empty stations
-      var q1=(i-1)*2+1, q2=(i-1)*2+2, sa=a.system||"", sb=b.system||"";
-      var pill = (sa && (sa===sb || !sb)) ? sa : (sb && !sa ? sb : "");
-      function line(qn,s,sys){
-        var tag=(sys && !pill) ? ' <span style="font-size:14px;opacity:.65">('+esc(sys)+')</span>' : '';
-        return '<div class="qrow"><b>'+qn+'.</b> '+(s.stem?esc(s.stem):"____")+tag+'</div>';
+      var q1=(i-1)*2+1, q2=(i-1)*2+2;
+      // The system (Skeletal, Cells & tissues, and so on) is deliberately NOT
+      // printed on a station card. Naming it beside the prompt hands the student
+      // half the answer, especially on histology.
+      function line(qn,s){
+        return '<div class="qrow"><b>'+qn+'.</b> '+(s.stem?esc(s.stem):"____")+'</div>';
       }
       var bonusHtml="";
       if(state.bonusOn){
@@ -665,8 +666,8 @@
         '<div class="sbrand">'+LOGO_SVG+'<span class="nm">Human <span class="a">Anatomy</span></span><span class="sub">BIO 004 &middot; Solano</span></div>'+
         '<div class="sbody">'+
           '<div class="sleft"><div class="seye">STATION</div><div class="bignum">'+i+'</div></div>'+
-          '<div class="sright">'+(pill?'<span class="spill">'+esc(pill)+'</span>':'')+
-            '<div class="qnums">Questions '+q1+' &amp; '+q2+'</div>'+line(q1,a,sa)+line(q2,b,sb)+bonusHtml+'</div>'+
+          '<div class="sright">'+
+            '<div class="qnums">Questions '+q1+' &amp; '+q2+'</div>'+line(q1,a)+line(q2,b)+bonusHtml+'</div>'+
         '</div>'+
         '<div class="sfoot">Record your answers on your lab practical answer sheet.</div>';
       host.appendChild(card);
